@@ -1,0 +1,108 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "Master in Finance (Zero to Hero)",
+      "author": "Chanuka Saranga",
+      "thumbnail": "https://images.unsplash.com/photo-1579532536935-619928decd08?w=800",
+      "progress": 43,
+      "domain": "Finance",
+      "description": "A comprehensive guide to financial markets and investment strategies."
+    },
+    {
+      "id": 2,
+      "title": "Master in Fintech (Zero to Hero)",
+      "author": "Sahan Lakshitha",
+      "thumbnail": "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800",
+      "progress": 43,
+      "domain": "Tech",
+      "description": "Learn about blockchain, digital payments, and fintech innovations."
+    },
+    {
+      "id": 3,
+      "title": "Financial Literacy 101",
+      "author": "Expert Instructor",
+      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
+      "progress": 0,
+      "domain": "Finance",
+      "description": "Introduction to financial planning and money management."
+    },
+    {
+      "id": 4,
+      "title": "Investment Strategies & Portfolio Management",
+      "author": "Chanuka Saranga",
+      "thumbnail": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800",
+      "progress": 0,
+      "domain": "Finance",
+      "description": "Learn advanced investment strategies and portfolio optimization."
+    },
+    {
+      "id": 5,
+      "title": "Blockchain Development Fundamentals",
+      "author": "Sahan Lakshitha",
+      "thumbnail": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Get started with blockchain technology and smart contracts."
+    },
+    {
+      "id": 6,
+      "title": "Full Stack Web Development",
+      "author": "Tech Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Master modern web development technologies and frameworks."
+    },
+    {
+      "id": 7,
+      "title": "Stock Market Trading Fundamentals",
+      "author": "Chanuka Saranga",
+      "thumbnail": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800",
+      "progress": 0,
+      "domain": "Finance",
+      "description": "Learn the basics of stock market trading and analysis."
+    },
+    {
+      "id": 8,
+      "title": "Artificial Intelligence in Finance",
+      "author": "Tech & Finance Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1516110833967-0b5716ca1387?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Explore AI applications in financial services."
+    },
+    {
+      "id": 9,
+      "title": "Mobile App Development",
+      "author": "Tech Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Build mobile applications for iOS and Android platforms."
+    },
+    {
+      "id": 10,
+      "title": "Personal Finance Mastery",
+      "author": "Finance Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800",
+      "progress": 0,
+      "domain": "Finance",
+      "description": "Master personal finance and wealth building strategies."
+    }
+  ],
+  "investments": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "amount": 6,
+      "duration": 6
+    },
+    {
+      "id": 2,
+      "courseId": 2,
+      "amount": 6,
+      "duration": 12
+    }
+  ]
+}
