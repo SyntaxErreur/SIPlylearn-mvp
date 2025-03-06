@@ -1,14 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { useRoute, useLocation } from "wouter";
-import { Course } from "../lib/schema";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Card, CardContent } from "../components/ui/card";
-import { Progress } from "../components/ui/progress";
-import { Button } from "../components/ui/button";
-import { ArrowLeft, Play } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
-import SipCalculator from "../components/sip-calculator";
+import { useRoute } from "wouter";
+import { Course } from "@shared/schema";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Play, ChevronDown } from "lucide-react";
+import SipCalculator from "@/components/sip-calculator";
+import { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Mock data for the course contents
 const courseContents = [
@@ -42,6 +48,15 @@ const courseContents = [
       },
     ],
   },
+  {
+    title: "Banking Overview",
+    lectures: [
+      {
+        title: "Introduction to Banking",
+        duration: "42 minutes video",
+      },
+    ],
+  },
 ];
 
 const faqs = [
@@ -57,11 +72,14 @@ const faqs = [
     question: "Is financial aid available?",
     answer: "We offer flexible SIP plans starting from just $1/day to make learning accessible to everyone.",
   },
+  {
+    question: "Is this certificate industry recognized?",
+    answer: "Yes, our certificates are recognized by leading companies in the finance industry.",
+  },
 ];
 
 export default function CoursePage() {
   const [, params] = useRoute("/course/:id");
-  const [, setLocation] = useLocation();
   const { data: course } = useQuery<Course>({
     queryKey: [`/api/course/${params?.id}`],
   });
@@ -181,17 +199,11 @@ export default function CoursePage() {
                     <SheetTrigger asChild>
                       <Button className="w-full">SIP It</Button>
                     </SheetTrigger>
-                    <SheetContent>
-                      <SipCalculator courseId={parseInt(params?.id || "0")} />
+                    <SheetContent side="bottom" className="h-[90vh]">
+                      <SipCalculator courseId={course.id} />
                     </SheetContent>
                   </Sheet>
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => setLocation("/terms?type=full")}
-                  >
-                    Pay at once
-                  </Button>
+                  <Button variant="outline" className="w-full">Pay at once</Button>
                 </div>
               </CardContent>
             </Card>

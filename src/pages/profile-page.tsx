@@ -36,14 +36,23 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4">
-        <Button 
-          variant="ghost" 
-          className="mb-4 hover:bg-transparent hover:text-primary transition-colors" 
-          onClick={() => window.history.back()}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Home
-        </Button>
+        <div className="flex items-center justify-between">
+          <Button 
+            variant="ghost" 
+            className="hover:bg-transparent hover:text-primary transition-colors" 
+            onClick={() => window.history.back()}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Home
+          </Button>
+          <Link href="/">
+            <img 
+              src="/SIPlyLearn-purple.png" 
+              alt="SIPlyLearn Logo" 
+              className="h-8 cursor-pointer"
+            />
+          </Link>
+        </div>
       </div>
 
       <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent pt-12 pb-8">

@@ -1,0 +1,73 @@
+chunk-T7IE6CWR.js?v=9020b2c1:521 Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
+    at a
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:300:18
+    at CourseCard (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/course-card.tsx:21:38)
+    at div
+    at a
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:300:18
+    at div
+    at div
+    at main
+    at div
+    at HomePage (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/pages/home-page.tsx:30:20)
+    at Route (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:285:16)
+    at ProtectedRoute (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/protected-route.tsx:22:3)
+    at Switch (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:342:17)
+    at Router
+    at AuthProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/hooks/use-auth.tsx:28:32)
+    at QueryClientProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=260c70e2:2861:3)
+    at App
+    at QueryClientProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=260c70e2:2861:3)
+printWarning	@	chunk-T7IE6CWR.js?v=9020b2c1:521
+
+2
+sip-calculator.tsx:68 Uncaught TypeError: useLocation is not a function or its return value is not iterable
+    at SipCalculator (sip-calculator.tsx:68:29)
+chunk-T7IE6CWR.js?v=9020b2c1:14052 The above error occurred in the <SipCalculator> component:
+
+    at SipCalculator (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/sip-calculator.tsx:62:41)
+    at div
+    at div
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-BL35FOOP.js?v=9020b2c1:41:13
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-PQC26PZU.js?v=9020b2c1:61:7
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-CSSG5MQI.js?v=9020b2c1:74:11
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-CSSG5MQI.js?v=9020b2c1:54:11
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-BL35FOOP.js?v=9020b2c1:41:13
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:53:5
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:1338:13
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:1257:58
+    at Presence (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-W27BAB2E.js?v=9020b2c1:24:11)
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:1248:64
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-CSSG5MQI.js?v=9020b2c1:74:11
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-CSSG5MQI.js?v=9020b2c1:54:11
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-BL35FOOP.js?v=9020b2c1:41:13
+    at https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-PQC26PZU.js?v=9020b2c1:268:22
+    at Presence (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-W27BAB2E.js?v=9020b2c1:24:11)
+    at Provider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-3G6MQSIN.js?v=9020b2c1:40:15)
+    at DialogPortal (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:1211:11)
+    at _c3 (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/ui/sheet.tsx:48:12)
+    at Provider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/chunk-3G6MQSIN.js?v=9020b2c1:40:15)
+    at Dialog (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ee09956b:1152:5)
+    at div
+    at div
+    at _c9 (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/ui/card.tsx:106:12)
+    at div
+    at _c (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at div
+    at div
+    at CoursePage (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/pages/course-page.tsx:81:22)
+    at Route (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:285:16)
+    at ProtectedRoute (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/components/protected-route.tsx:22:3)
+    at Switch (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/wouter.js?v=87edd6e6:342:17)
+    at Router
+    at AuthProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/src/hooks/use-auth.tsx:28:32)
+    at QueryClientProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=260c70e2:2861:3)
+    at App
+    at QueryClientProvider (https://e873af7b-137f-4eab-a84a-aa1ea5b0f5d5-00-310rwkfdmyi8u.kirk.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=260c70e2:2861:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-T7IE6CWR.js?v=9020b2c1:9145 Uncaught TypeError: useLocation is not a function or its return value is not iterable
+    at SipCalculator (sip-calculator.tsx:68:29)

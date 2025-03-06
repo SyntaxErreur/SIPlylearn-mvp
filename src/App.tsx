@@ -10,6 +10,13 @@ import HomePage from "./pages/home-page";
 import CoursePage from "./pages/course-page";
 import ProfilePage from "./pages/profile-page";
 import AuthPage from "./pages/auth-page";
+import OnboardingPage from "./pages/onboarding-page";
+import ActivityPage from "./pages/activity-page";
+import TermsPage from "./pages/terms-page";
+import PaymentPage from "./pages/payment-page";
+import PlansPage from "./pages/plans-page";
+import AchievementsPage from "./pages/achievements-page";
+import CertificatesPage from "./pages/certificates-page";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -18,6 +25,13 @@ function Router() {
       <ProtectedRoute path="/" component={HomePage} />
       <ProtectedRoute path="/course/:id" component={CoursePage} />
       <ProtectedRoute path="/profile" component={ProfilePage} />
+      <ProtectedRoute path="/onboarding" component={OnboardingPage} />
+      <ProtectedRoute path="/activity" component={ActivityPage} />
+      <ProtectedRoute path="/terms" component={TermsPage} />
+      <ProtectedRoute path="/payment" component={PaymentPage} />
+      <ProtectedRoute path="/plans" component={PlansPage} />
+      <ProtectedRoute path="/achievements" component={AchievementsPage} />
+      <ProtectedRoute path="/certificates" component={CertificatesPage} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>

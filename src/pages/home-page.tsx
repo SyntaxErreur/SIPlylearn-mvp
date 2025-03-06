@@ -3,14 +3,7 @@ import { Course, Investment } from "../lib/schema";
 import { useAuth } from "../hooks/use-auth";
 import CourseCard from "../components/course-card";
 import { Button } from "../components/ui/button";
-import {
-  Bell,
-  TrendingUp,
-  BarChart3,
-  Scroll,
-  FileText,
-  Play,
-} from "lucide-react";
+import { Bell, TrendingUp, BarChart3, Scroll, FileText, Play, Users, Activity, Timer, Trophy } from "lucide-react";
 import { Link } from "wouter";
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { Card } from "../components/ui/card";
@@ -21,46 +14,55 @@ export default function HomePage() {
   const { user } = useAuth();
   const [selectedDomain, setSelectedDomain] = useState<string>("Finance");
 
-  const { data: courses = [] } = useQuery<Course[]>({
-    queryKey: ["/api/courses"],
+  const { data: courses = [] } = useQuery<Course[]>({ 
+    queryKey: ['/api/courses']
   });
 
   const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ["/api/investments"],
+    queryKey: ['/api/investments']
   });
 
-  const totalSavings = investments.reduce(
-    (sum, inv) => sum + Number(inv.amount) * 30 * inv.duration,
-    0
-  );
-  const ongoingCourses = courses.filter((course) =>
-    investments.some((inv) => inv.courseId === course.id)
-  );
+  const totalSavings = investments.reduce((sum, inv) => sum + Number(inv.amount) * 30 * inv.duration, 0);
+  const ongoingCourses = courses.filter(course => investments.some(inv => inv.courseId === course.id));
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
-            <p className="text-muted-foreground">
-              Welcome back to your learning journey
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-            </Button>
-            <Link href="/profile">
-              <Button variant="ghost" size="icon">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-primary/20">
-                    {user?.username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
+          <div className="flex items-center gap-8">
+            <Link href="/">
+              <img 
+                src="/SIPlyLearn-purple.png" 
+                alt="SIPlyLearn Logo" 
+                className="h-8 cursor-pointer"
+              />
             </Link>
+            <div>
+              <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
+              <p className="text-muted-foreground">Welcome back to your learning journey</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-sm bg-primary/5 px-4 py-2 rounded-full">
+              <Users className="h-4 w-4 text-primary" />
+              <span className="font-medium">12.5k+</span>
+              <span className="text-muted-foreground">Community Members</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+              </Button>
+              <Link href="/profile">
+                <Button variant="ghost" size="icon">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-primary/20">
+                      {user?.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -68,14 +70,14 @@ export default function HomePage() {
       <main className="container mx-auto px-4 py-8 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-primary/10 rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-2">Total Savings</h3>
+            <h3 className="text-lg font-medium mb-2">SIPly Savings</h3>
             <p className="text-3xl font-bold">${totalSavings.toFixed(2)}</p>
             <p className="text-sm text-muted-foreground mt-2">
               Invested across {ongoingCourses.length} active courses
             </p>
           </div>
           <div className="bg-primary/10 rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-2">Returns on Savings</h3>
+            <h3 className="text-lg font-medium mb-2">Siply rewards</h3>
             <p className="text-3xl font-bold">
               ${(totalSavings * 0.02).toFixed(2)}
               <span className="text-sm font-normal text-muted-foreground ml-2">
@@ -89,40 +91,32 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Link href="/investments">
+          <Link href="/activity">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
-              <TrendingUp className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="font-medium">My Investments</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Track your SIP investments
-              </p>
+              <Activity className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
+              <h3 className="font-medium">My Activity</h3>
+              <p className="text-sm text-muted-foreground mt-1">Track your learning progress</p>
             </Card>
           </Link>
-          <Link href="/returns">
+          <Link href="/plans">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
-              <BarChart3 className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="font-medium">My Returns</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                View your earning stats
-              </p>
+              <Timer className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
+              <h3 className="font-medium">Running Plan</h3>
+              <p className="text-sm text-muted-foreground mt-1">View active subscriptions</p>
+            </Card>
+          </Link>
+          <Link href="/achievements">
+            <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
+              <Trophy className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
+              <h3 className="font-medium">Total Achievements</h3>
+              <p className="text-sm text-muted-foreground mt-1">Your learning milestones</p>
             </Card>
           </Link>
           <Link href="/certificates">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
               <Scroll className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
               <h3 className="font-medium">My Certificates</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Access your achievements
-              </p>
-            </Card>
-          </Link>
-          <Link href="/terms">
-            <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
-              <FileText className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="font-medium">T&C</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Review our policies
-              </p>
+              <p className="text-sm text-muted-foreground mt-1">View your credentials</p>
             </Card>
           </Link>
         </div>

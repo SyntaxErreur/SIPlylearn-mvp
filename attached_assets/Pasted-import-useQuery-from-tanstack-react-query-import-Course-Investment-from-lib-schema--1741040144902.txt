@@ -1,0 +1,152 @@
+import { useQuery } from "@tanstack/react-query";
+import { Course, Investment } from "../lib/schema";
+import { useAuth } from "../hooks/use-auth";
+import CourseCard from "../components/course-card";
+import { Button } from "../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Input } from "../components/ui/input";
+import { Bell, Search, Filter, TrendingUp, BarChart3, Scroll, FileText, Play } from "lucide-react";
+import { Link } from "wouter";
+import { Avatar, AvatarFallback } from "../components/ui/avatar";
+import { Card } from "../components/ui/card";
+import { Progress } from "../components/ui/progress";
+
+export default function HomePage() {
+  const { user } = useAuth();
+  const { data: courses = [] } = useQuery<Course[]>({ 
+    queryKey: ['/api/courses']
+  });
+
+  const { data: investments = [] } = useQuery<Investment[]>({
+    queryKey: ['/api/investments']
+  });
+
+  const totalSavings = investments.reduce((sum, inv) => sum + Number(inv.amount) * 30 * inv.duration, 0);
+  const domains = ["Finance", "Tech"];
+
+  const ongoingCourses = courses.filter(course => investments.some(inv => inv.courseId === course.id));
+
+  return (
+    <div className="min-h-screen bg-background pb-20">
+      <header className="border-b bg-background">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
+            <p className="text-muted-foreground">Welcome, let's start invest for life</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon">
+              <Bell className="h-5 w-5" />
+            </Button>
+            <Link href="/profile">
+              <Button variant="ghost" size="icon">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-primary/20">
+                    {user?.username.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-primary/10 rounded-lg p-6">
+            <h3 className="text-lg font-medium mb-2">Total Savings</h3>
+            <p className="text-3xl font-bold">${totalSavings.toFixed(2)}</p>
+          </div>
+          <div className="bg-primary/10 rounded-lg p-6">
+            <h3 className="text-lg font-medium mb-2">Returns on Savings</h3>
+            <p className="text-3xl font-bold">
+              ${(totalSavings * 0.02).toFixed(2)}
+              <span className="text-sm font-normal text-muted-foreground ml-2">(2%)</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-4 mb-8">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+              placeholder="Search in course name" 
+              className="pl-10"
+            />
+          </div>
+          <Button variant="outline" size="icon">
+            <Filter className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Link href="/investments">
+            <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+              <TrendingUp className="h-6 w-6 mb-2 text-primary" />
+              <h3 className="font-medium">My Investments</h3>
+            </Card>
+          </Link>
+          <Link href="/returns">
+            <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+              <BarChart3 className="h-6 w-6 mb-2 text-primary" />
+              <h3 className="font-medium">My Returns</h3>
+            </Card>
+          </Link>
+          <Link href="/certificates">
+            <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+              <Scroll className="h-6 w-6 mb-2 text-primary" />
+              <h3 className="font-medium">My Certificates</h3>
+            </Card>
+          </Link>
+          <Link href="/terms">
+            <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
+              <FileText className="h-6 w-6 mb-2 text-primary" />
+              <h3 className="font-medium">T&C</h3>
+            </Card>
+          </Link>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">My Learnings</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {ongoingCourses.map(course => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Course Progress</h2>
+          <div className="space-y-4">
+            {ongoingCourses.map(course => (
+              <Card key={course.id} className="p-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 relative rounded-lg overflow-hidden">
+                    <img 
+                      src={course.thumbnail} 
+                      alt={course.title}
+                      className="object-cover w-full h-full"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <Play className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-2">{course.title}</h3>
+                    <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                      <span>{course.progress}% Completed</span>
+                      <Link href={`/course/${course.id}`}>
+                        <span className="text-primary hover:underline">Continue Learning</span>
+                      </Link>
+                    </div>
+                    <Progress value={course.progress || 0} className="h-2" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
