@@ -253,7 +253,7 @@ export default function ProfilePage() {
                   <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </Button>
               </Link>
-              <Link href="/terms">
+              <Link href="/terms/full">
                 <Button
                   variant="ghost"
                   className="w-full justify-between p-4 h-auto hover:bg-primary/5 rounded-lg"

@@ -20,6 +20,7 @@ import CertificatesPage from "./pages/certificates-page";
 import AnalyticsPage from "./pages/analytics-page";
 import NotFound from "./pages/not-found";
 import AboutPage from "./pages/about-page";
+import TermsFullPage from "./pages/terms-full";
 
 function Router() {
   return (
@@ -30,6 +31,7 @@ function Router() {
       <ProtectedRoute path="/onboarding" component={OnboardingPage} />
       <ProtectedRoute path="/activity" component={ActivityPage} />
       <ProtectedRoute path="/terms" component={TermsPage} />
+      <ProtectedRoute path="/terms/full" component={TermsFullPage} />
       <ProtectedRoute path="/payment" component={PaymentPage} />
       <ProtectedRoute path="/plans" component={PlansPage} />
       <ProtectedRoute path="/achievements" component={AchievementsPage} />
