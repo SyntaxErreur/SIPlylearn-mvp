@@ -3,11 +3,23 @@ import { useAuth } from "../hooks/use-auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "../lib/schema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/form";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 
@@ -16,7 +28,7 @@ export default function AuthPage() {
   const [, setLocation] = useLocation();
 
   if (user) {
-    const isNewUser = !localStorage.getItem('hasCompletedOnboarding');
+    const isNewUser = !localStorage.getItem("hasCompletedOnboarding");
     if (isNewUser) {
       setLocation("/onboarding");
     } else {
@@ -30,9 +42,9 @@ export default function AuthPage() {
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <img 
-              src="/SIPlyLearn-purple.png" 
-              alt="SIPlyLearn Logo" 
+            <img
+              src="/SIPlyLearn-purple.png"
+              alt="SIPlyLearn Logo"
               className="h-12 mx-auto"
             />
           </div>
@@ -67,8 +79,8 @@ export default function AuthPage() {
             Invest in Your Future
           </h1>
           <p className="text-lg text-primary-foreground/90">
-            Access quality courses with flexible payment options.
-            Learn at your own pace and build your knowledge systematically.
+            Access quality courses with flexible payment options. Learn at your
+            own pace and build your knowledge systematically.
           </p>
         </div>
       </div>
@@ -79,7 +91,9 @@ export default function AuthPage() {
 function LoginForm() {
   const { loginMutation } = useAuth();
   const form = useForm({
-    resolver: zodResolver(insertUserSchema.pick({ username: true, password: true })),
+    resolver: zodResolver(
+      insertUserSchema.pick({ username: true, password: true })
+    ),
     defaultValues: {
       username: "",
       password: "",
@@ -88,7 +102,10 @@ function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit((data) => loginMutation.mutate(data))} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit((data) => loginMutation.mutate(data))}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="username"
@@ -109,14 +126,24 @@ function LoginForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Enter your password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
-          {loginMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={loginMutation.isPending}
+        >
+          {loginMutation.isPending && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Login
         </Button>
       </form>
@@ -138,7 +165,18 @@ function RegisterForm() {
   });
 
   const onSubmit = async (data: any) => {
-    localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem("hasCompletedOnboarding");
+
+    localStorage.setItem(
+      "SIP",
+      JSON.stringify({
+        amount: 0,
+        duration: 0,
+        returnsPercentage: 0,
+        startDate: new Date().toISOString(),
+      })
+    );
+
     try {
       await registerMutation.mutateAsync(data);
       setLocation("/onboarding");
@@ -196,14 +234,24 @@ function RegisterForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Choose a password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Choose a password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
-          {registerMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={registerMutation.isPending}
+        >
+          {registerMutation.isPending && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Register
         </Button>
       </form>
