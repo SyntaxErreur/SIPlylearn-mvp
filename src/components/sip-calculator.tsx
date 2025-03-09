@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { useToast } from "../hooks/use-toast";
 import { Check, X, TrendingUp, Calendar, DollarSign, PiggyBank, Lock } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { apiRequest } from "../lib/api";
 
 interface SipCalculatorProps {
   courseId: number;
@@ -27,38 +28,34 @@ interface PlanFeatures {
   certification: string;
 }
 
-const getPlanFeatures = (duration: number): PlanFeatures => {
-  const features: Record<number, PlanFeatures> = {
-    3: {
-      savedAmount: 91,
-      rewardAmount: 0,
-      showAds: true,
-      domainAccess: "Selected domain only",
-      certification: "-"
-    },
-    6: {
-      savedAmount: 182,
-      rewardAmount: 1.82,
-      showAds: true,
-      domainAccess: "Two domains access",
-      certification: "University certified courses"
-    },
-    9: {
-      savedAmount: 273,
-      rewardAmount: 5.46,
-      showAds: false,
-      domainAccess: "All domains access",
-      certification: "University certified courses"
-    },
-    12: {
-      savedAmount: 365,
-      rewardAmount: 14.6,
-      showAds: false,
-      domainAccess: "All domains access",
-      certification: "University certified courses"
-    }
+interface Investment {
+  courseId: number;
+  amount: number;
+  duration: number;
+  type: 'sip' | 'full';
+  startDate: string;
+}
+
+const getPlanFeatures = (duration: number, dailyAmount: number): PlanFeatures => {
+  const savedAmount = dailyAmount * 30 * duration;
+  const getROS = (months: number): number => {
+    if (months <= 3) return 0;
+    if (months <= 6) return 0.02;
+    if (months <= 9) return 0.04;
+    return 0.08;
   };
-  return features[duration];
+  const apy = getROS(duration);
+  const rewardAmount = savedAmount * (apy * (duration / 12));
+  const features: PlanFeatures = {
+    savedAmount: savedAmount,
+    rewardAmount: Number(rewardAmount.toFixed(2)),
+    showAds: duration <= 6,
+    domainAccess: duration <= 3 ? "Selected domain only" :
+                 duration <= 6 ? "Two domains access" :
+                 "All domains access",
+    certification: duration <= 3 ? "-" : "University certified courses"
+  };
+  return features;
 };
 
 export default function SipCalculator({ courseId }: SipCalculatorProps) {
@@ -77,12 +74,11 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
     queryKey: [`/api/course/${courseId}`],
   });
 
-  const currentPlan = getPlanFeatures(duration);
+  const currentPlan = getPlanFeatures(duration, amount);
   const dailyAmount = amount;
   const monthlyAmount = dailyAmount * 30;
   const totalAmount = monthlyAmount * duration;
 
-  // Get unique domains from courses
   const domains = Array.from(new Set(courses.map(course => course.domain)));
 
   const needsDomainSelection = duration <= 6;
@@ -100,10 +96,50 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
     });
   };
 
+  const createInvestmentMutation = useMutation({
+    mutationFn: async (investment: Investment) => {
+      const res = await apiRequest("POST", "/api/investments", investment);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/investments'] });
+      toast({
+        title: "Investment created",
+        description: "Your SIP plan has been set up successfully!",
+      });
+      setLocation("/");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to create investment",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handlePayment = () => {
     if (needsDomainSelection && selectedDomains.length === 0) {
+      toast({
+        title: "Domain selection required",
+        description: "Please select your preferred learning domains.",
+        variant: "destructive",
+      });
       return;
     }
+
+    // Store the SIP details in localStorage for use after terms acceptance
+    const pendingSIP = {
+      courseId,
+      amount,
+      duration,
+      type: 'sip' as const,
+      startDate: new Date().toISOString(),
+    };
+
+    localStorage.setItem('pendingSIP', JSON.stringify(pendingSIP));
+
+    // Redirect to terms page
     setLocation("/terms");
   };
 
@@ -124,7 +160,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {sipDurationOptions.map((months) => {
-              const features = getPlanFeatures(months);
+              const features = getPlanFeatures(months, amount);
               return (
                 <Card
                   key={months}
@@ -137,7 +173,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                     <div className="text-2xl font-bold">{months}</div>
                     <div className="text-sm">Months</div>
                     <div className="text-xs font-medium mt-2 px-2 py-0.5 bg-primary/10 rounded-full">
-                      {features.rewardAmount > 0 ? `${(features.rewardAmount / features.savedAmount * 100).toFixed(1)}% APY` : "No Rewards"}
+                      {features.rewardAmount > 0 ? `${(features.rewardAmount / features.savedAmount * 100).toFixed(1)}% ROS` : "No Rewards"}
                     </div>
                   </div>
                   <div className="space-y-2 text-sm border-t pt-3">
@@ -161,7 +197,6 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                     )}
                   </div>
 
-                  {/* Domain Selection for 3 and 6 month plans */}
                   {(months === duration && needsDomainSelection) && (
                     <div className="mt-4 pt-3 border-t">
                       <div className="flex items-center gap-2 mb-2">

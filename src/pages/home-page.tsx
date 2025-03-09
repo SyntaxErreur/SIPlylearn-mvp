@@ -1,29 +1,66 @@
 import { useQuery } from "@tanstack/react-query";
-import { Course, Investment } from "../lib/schema";
+import { Course } from "../lib/schema";
 import { useAuth } from "../hooks/use-auth";
 import CourseCard from "../components/course-card";
 import { Button } from "../components/ui/button";
-import { Bell, TrendingUp, BarChart3, Scroll, FileText, Play, Users, Activity, Timer, Trophy } from "lucide-react";
+import {
+  Bell,
+  BarChart3,
+  Scroll,
+  FileText,
+  Play,
+  Users,
+  Activity,
+  Timer,
+  Trophy,
+  ArrowRight,
+} from "lucide-react";
 import { Link } from "wouter";
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { Card } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { mockCourses } from "../data/mockCourses";
+import { storageService } from "../lib/storage";
 
 export default function HomePage() {
   const { user } = useAuth();
   const [selectedDomain, setSelectedDomain] = useState<string>("Finance");
+  const [investments, setInvestments] = useState(() =>
+    storageService.getInvestments()
+  );
+  const [metrics, setMetrics] = useState(() =>
+    storageService.calculateInvestmentMetrics()
+  );
 
-  const { data: courses = [] } = useQuery<Course[]>({ 
-    queryKey: ['/api/courses']
+  const { data: courses = mockCourses } = useQuery<Course[]>({
+    queryKey: ["/api/courses"],
   });
 
-  const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ['/api/investments']
-  });
+  // Update metrics and investments when storage changes
+  useEffect(() => {
+    const handleStorageUpdate = () => {
+      const newInvestments = storageService.getInvestments();
+      setInvestments(newInvestments);
+      setMetrics(storageService.calculateInvestmentMetrics());
+    };
 
-  const totalSavings = investments.reduce((sum, inv) => sum + Number(inv.amount) * 30 * inv.duration, 0);
-  const ongoingCourses = courses.filter(course => investments.some(inv => inv.courseId === course.id));
+    // Update on mount and when storage changes
+    handleStorageUpdate();
+
+    // Listen for storage updates
+    window.addEventListener("storage-updated", handleStorageUpdate);
+    window.addEventListener("storage", handleStorageUpdate);
+
+    return () => {
+      window.removeEventListener("storage-updated", handleStorageUpdate);
+      window.removeEventListener("storage", handleStorageUpdate);
+    };
+  }, []);
+
+  const ongoingCourses = courses.filter((course) =>
+    investments.some((inv) => inv.courseId === course.id)
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -31,15 +68,17 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-8">
             <Link href="/">
-              <img 
-                src="/SIPlyLearn-purple.png" 
-                alt="SIPlyLearn Logo" 
+              <img
+                src="/SIPlyLearn-purple.png"
+                alt="SIPlyLearn Logo"
                 className="h-8 cursor-pointer"
               />
             </Link>
             <div>
               <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
-              <p className="text-muted-foreground">Welcome back to your learning journey</p>
+              <p className="text-muted-foreground">
+                Welcome back to your learning journey
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-6">
@@ -71,21 +110,27 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-primary/10 rounded-lg p-6">
             <h3 className="text-lg font-medium mb-2">SIPly Savings</h3>
-            <p className="text-3xl font-bold">${totalSavings.toFixed(2)}</p>
+            <p className="text-3xl font-bold">
+              ${metrics.totalSavings.toFixed(2)}
+            </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Invested across {ongoingCourses.length} active courses
+              {ongoingCourses.length > 0
+                ? `Invested across ${ongoingCourses.length} active courses`
+                : "Start your investment journey today"}
             </p>
           </div>
           <div className="bg-primary/10 rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-2">Siply rewards</h3>
-            <p className="text-3xl font-bold">
-              ${(totalSavings * 0.02).toFixed(2)}
+            <h3 className="text-lg font-medium mb-2">SIPly Rewards</h3>
+            <p className="text-3xl font-bold text-primary">
+              ${metrics.totalReturns.toFixed(2)}
               <span className="text-sm font-normal text-muted-foreground ml-2">
-                (2% APY)
+                ({metrics.rosPercentage}% ROS)
               </span>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Projected annual returns
+              {ongoingCourses.length > 0
+                ? "Projected annual returns"
+                : "Invest to start earning rewards"}
             </p>
           </div>
         </div>
@@ -95,28 +140,36 @@ export default function HomePage() {
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
               <Activity className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
               <h3 className="font-medium">My Activity</h3>
-              <p className="text-sm text-muted-foreground mt-1">Track your learning progress</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Track your learning progress
+              </p>
             </Card>
           </Link>
           <Link href="/plans">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
               <Timer className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
               <h3 className="font-medium">Running Plan</h3>
-              <p className="text-sm text-muted-foreground mt-1">View active subscriptions</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                View active subscriptions
+              </p>
             </Card>
           </Link>
           <Link href="/achievements">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
               <Trophy className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
               <h3 className="font-medium">Total Achievements</h3>
-              <p className="text-sm text-muted-foreground mt-1">Your learning milestones</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Your learning milestones
+              </p>
             </Card>
           </Link>
           <Link href="/certificates">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-all hover:-translate-y-1 group">
               <Scroll className="h-6 w-6 mb-2 text-primary group-hover:scale-110 transition-transform" />
               <h3 className="font-medium">My Certificates</h3>
-              <p className="text-sm text-muted-foreground mt-1">View your credentials</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                View your credentials
+              </p>
             </Card>
           </Link>
         </div>
@@ -167,26 +220,32 @@ export default function HomePage() {
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold mb-2">Browse Courses</h2>
             <p className="text-muted-foreground">
-              Explore our collection of courses in Finance and Technology
+              Explore our collection of courses across various domains
             </p>
           </div>
 
-          <div className="flex justify-center mb-8">
-            <div className="border rounded-full p-1 inline-flex">
-              <Button
-                variant={selectedDomain === "Finance" ? "default" : "ghost"}
-                className="rounded-full px-8"
-                onClick={() => setSelectedDomain("Finance")}
-              >
-                Finance ({courses.filter((c) => c.domain === "Finance").length})
-              </Button>
-              <Button
-                variant={selectedDomain === "Tech" ? "default" : "ghost"}
-                className="rounded-full px-8"
-                onClick={() => setSelectedDomain("Tech")}
-              >
-                Tech ({courses.filter((c) => c.domain === "Tech").length})
-              </Button>
+          <div className="flex justify-center mb-8 overflow-x-auto pb-4">
+            <div className="border rounded-full p-1 inline-flex space-x-1">
+              {[
+                "Finance",
+                "Tech",
+                "Data Science",
+                "Business",
+                "Language Learning",
+                "Social Science",
+                "IT",
+                "Computer Science",
+                "Personal Development",
+              ].map((domain) => (
+                <Button
+                  key={domain}
+                  variant={selectedDomain === domain ? "default" : "ghost"}
+                  className="rounded-full px-4 whitespace-nowrap"
+                  onClick={() => setSelectedDomain(domain)}
+                >
+                  {domain} ({courses.filter((c) => c.domain === domain).length})
+                </Button>
+              ))}
             </div>
           </div>
 
@@ -200,6 +259,23 @@ export default function HomePage() {
                   </div>
                 </Link>
               ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <h3 className="text-xl font-semibold mb-4">
+              Want to explore more courses?
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Discover a wide range of courses across different domains. Our
+              expert instructors are here to guide you through your learning
+              journey.
+            </p>
+            <Link href="/courses">
+              <Button size="lg" className="px-8">
+                Learn More
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </main>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -17,7 +17,9 @@ import PaymentPage from "./pages/payment-page";
 import PlansPage from "./pages/plans-page";
 import AchievementsPage from "./pages/achievements-page";
 import CertificatesPage from "./pages/certificates-page";
+import AnalyticsPage from "./pages/analytics-page";
 import NotFound from "./pages/not-found";
+import AboutPage from "./pages/about-page";
 
 function Router() {
   return (
@@ -32,6 +34,8 @@ function Router() {
       <ProtectedRoute path="/plans" component={PlansPage} />
       <ProtectedRoute path="/achievements" component={AchievementsPage} />
       <ProtectedRoute path="/certificates" component={CertificatesPage} />
+      <ProtectedRoute path="/analytics" component={AnalyticsPage} />
+      <ProtectedRoute path="/about" component={AboutPage} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>

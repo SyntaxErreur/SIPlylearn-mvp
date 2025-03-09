@@ -9,6 +9,9 @@ import { ArrowLeft, Play } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import SipCalculator from "../components/sip-calculator";
+import CourseReviews from "../components/course-reviews";
+import { useToast } from "../hooks/use-toast";
+import { storageService } from "../lib/storage";
 
 // Mock data for the course contents
 const courseContents = [
@@ -59,14 +62,71 @@ const faqs = [
   },
 ];
 
+// Add mock reviews data
+const reviews = [
+  {
+    id: 1,
+    user: "John Smith",
+    rating: 4.5,
+    comment: "Excellent course! The content is well-structured and easy to follow. The practical examples really helped solidify the concepts.",
+    date: "2024-03-01"
+  },
+  {
+    id: 2,
+    user: "Sarah Johnson",
+    rating: 5,
+    comment: "One of the best finance courses I've taken. The instructor explains complex topics in a very understandable way.",
+    date: "2024-02-28"
+  },
+  {
+    id: 3,
+    user: "Michael Brown",
+    rating: 4,
+    comment: "Great course overall. Would love to see more advanced topics covered in future updates.",
+    date: "2024-02-25"
+  }
+];
+
 export default function CoursePage() {
   const [, params] = useRoute("/course/:id");
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
+
   const { data: course } = useQuery<Course>({
     queryKey: [`/api/course/${params?.id}`],
   });
 
   if (!course) return null;
+
+  // Handle direct payment
+  const handleDirectPayment = () => {
+    try {
+      const investment = {
+        courseId: parseInt(params?.id || "0"),
+        amount: course.price || 0,
+        duration: 1,
+        type: 'full' as const,
+        startDate: new Date().toISOString(),
+      };
+
+      // Create investment directly in storage
+      storageService.createInvestment(investment);
+
+      toast({
+        title: "Payment successful",
+        description: "You now have access to this course!",
+      });
+
+      // Navigate to home page
+      setLocation("/");
+    } catch (error: any) {
+      toast({
+        title: "Payment failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -93,6 +153,7 @@ export default function CoursePage() {
               <TabsList>
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="contents">Contents</TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
                 <TabsTrigger value="other">Other Info</TabsTrigger>
               </TabsList>
 
@@ -155,6 +216,14 @@ export default function CoursePage() {
                 </Card>
               </TabsContent>
 
+              <TabsContent value="reviews">
+                <Card>
+                  <CardContent className="pt-6">
+                    <CourseReviews reviews={reviews} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               <TabsContent value="other">
                 <Card>
                   <CardContent className="pt-6">
@@ -188,7 +257,7 @@ export default function CoursePage() {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => setLocation("/terms?type=full")}
+                    onClick={handleDirectPayment}
                   >
                     Pay at once
                   </Button>

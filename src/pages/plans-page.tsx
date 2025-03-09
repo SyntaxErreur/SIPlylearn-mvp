@@ -35,9 +35,9 @@ export default function PlansPage() {
     Math.round(
       ((new Date().getTime() - startDate.getTime()) /
         (endDate.getTime() - startDate.getTime())) *
-        100
+        100,
     ),
-    100
+    100,
   );
 
   // Generate calendar dates
@@ -49,7 +49,7 @@ export default function PlansPage() {
     const date = new Date(
       currentMonth.getFullYear(),
       currentMonth.getMonth(),
-      i + 1
+      i + 1,
     );
     return {
       date,
@@ -91,7 +91,7 @@ export default function PlansPage() {
           <div className="flex items-center gap-4 mb-6">
             <DollarSign className="h-8 w-8 text-primary" />
             <div>
-              <h3 className="text-lg font-medium">SIPly Savings Value</h3>
+              <h3 className="text-lg font-medium">Total Savings Value</h3>
               <p className="text-3xl font-bold">${totalInvestment}</p>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function PlansPage() {
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                     (day) => (
                       <div key={day}>{day}</div>
-                    )
+                    ),
                   )}
                 </div>
                 <div className="grid grid-cols-7 gap-2">
@@ -158,7 +158,7 @@ export default function PlansPage() {
                   {Array.from({ length: currentMonth.getDay() }).map(
                     (_, index) => (
                       <div key={`empty-${index}`} className="h-16" />
-                    )
+                    ),
                   )}
 
                   {calendarDays.map((day, index) => (

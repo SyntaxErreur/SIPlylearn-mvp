@@ -16,8 +16,50 @@ const domains = [
   {
     id: "tech",
     name: "Tech",
-    description: "Learn programming, blockchain, AI, and cutting-edge technologies",
+    description: "Learn programming, web development, and modern tech stack",
     icon: "💻"
+  },
+  {
+    id: "data-science",
+    name: "Data Science",
+    description: "Explore data analysis, machine learning, and AI applications",
+    icon: "📊"
+  },
+  {
+    id: "business",
+    name: "Business",
+    description: "Study business strategy, marketing, and entrepreneurship",
+    icon: "💼"
+  },
+  {
+    id: "language-learning",
+    name: "Language Learning",
+    description: "Master new languages for personal and professional growth",
+    icon: "🗣️"
+  },
+  {
+    id: "social-science",
+    name: "Social Science",
+    description: "Understand human behavior, society, and cultural dynamics",
+    icon: "🌍"
+  },
+  {
+    id: "it",
+    name: "IT",
+    description: "Learn network security, system administration, and IT services",
+    icon: "🔧"
+  },
+  {
+    id: "computer-science",
+    name: "Computer Science",
+    description: "Study algorithms, operating systems, and computer architecture",
+    icon: "⚡"
+  },
+  {
+    id: "personal-development",
+    name: "Personal Development",
+    description: "Enhance leadership, communication, and soft skills",
+    icon: "🎯"
   }
 ];
 
@@ -60,11 +102,11 @@ export default function OnboardingPage() {
           <h1 className="text-3xl font-bold mb-4">Welcome to SIPlyLearn</h1>
           <p className="text-muted-foreground max-w-lg mx-auto">
             Choose your learning domains to personalize your experience. 
-            You can select multiple domains or change these preferences later.
+            Select multiple domains that interest you - you can always update these preferences later.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           {domains.map(domain => (
             <Card
               key={domain.id}

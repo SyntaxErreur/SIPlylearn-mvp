@@ -11,84 +11,318 @@
     },
     {
       "id": 2,
-      "title": "Master in Fintech (Zero to Hero)",
-      "author": "Sahan Lakshitha",
-      "thumbnail": "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800",
-      "progress": 43,
-      "domain": "Tech",
-      "description": "Learn about blockchain, digital payments, and fintech innovations."
-    },
-    {
-      "id": 3,
-      "title": "Financial Literacy 101",
-      "author": "Expert Instructor",
-      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-      "progress": 0,
-      "domain": "Finance",
-      "description": "Introduction to financial planning and money management."
-    },
-    {
-      "id": 4,
-      "title": "Investment Strategies & Portfolio Management",
-      "author": "Chanuka Saranga",
+      "title": "Investment Banking Fundamentals",
+      "author": "Robert Morgan",
       "thumbnail": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800",
       "progress": 0,
       "domain": "Finance",
-      "description": "Learn advanced investment strategies and portfolio optimization."
+      "description": "Learn the basics of investment banking and corporate finance."
     },
     {
-      "id": 5,
-      "title": "Blockchain Development Fundamentals",
-      "author": "Sahan Lakshitha",
-      "thumbnail": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
-      "progress": 0,
-      "domain": "Tech",
-      "description": "Get started with blockchain technology and smart contracts."
-    },
-    {
-      "id": 6,
-      "title": "Full Stack Web Development",
-      "author": "Tech Expert",
-      "thumbnail": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
-      "progress": 0,
-      "domain": "Tech",
-      "description": "Master modern web development technologies and frameworks."
-    },
-    {
-      "id": 7,
-      "title": "Stock Market Trading Fundamentals",
-      "author": "Chanuka Saranga",
+      "id": 3,
+      "title": "Stock Market Mastery",
+      "author": "David Williams",
       "thumbnail": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800",
       "progress": 0,
       "domain": "Finance",
-      "description": "Learn the basics of stock market trading and analysis."
+      "description": "Master technical analysis and trading strategies."
     },
     {
-      "id": 8,
-      "title": "Artificial Intelligence in Finance",
-      "author": "Tech & Finance Expert",
-      "thumbnail": "https://images.unsplash.com/photo-1516110833967-0b5716ca1387?w=800",
-      "progress": 0,
-      "domain": "Tech",
-      "description": "Explore AI applications in financial services."
-    },
-    {
-      "id": 9,
-      "title": "Mobile App Development",
-      "author": "Tech Expert",
-      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
-      "progress": 0,
-      "domain": "Tech",
-      "description": "Build mobile applications for iOS and Android platforms."
-    },
-    {
-      "id": 10,
-      "title": "Personal Finance Mastery",
-      "author": "Finance Expert",
+      "id": 4,
+      "title": "Personal Finance Planning",
+      "author": "Emily Roberts",
       "thumbnail": "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800",
       "progress": 0,
       "domain": "Finance",
-      "description": "Master personal finance and wealth building strategies."
+      "description": "Build a strong foundation in personal finance management."
+    },
+    {
+      "id": 5,
+      "title": "Full Stack Development",
+      "author": "Michael Chen",
+      "thumbnail": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "progress": 30,
+      "domain": "Tech",
+      "description": "Master modern web development with React and Node.js."
+    },
+    {
+      "id": 6,
+      "title": "Cloud Architecture",
+      "author": "Andrew Cloud",
+      "thumbnail": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Learn cloud platforms and infrastructure management."
+    },
+    {
+      "id": 7,
+      "title": "Mobile App Development",
+      "author": "Jessica Lee",
+      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Build iOS and Android apps using React Native."
+    },
+    {
+      "id": 8,
+      "title": "DevOps Engineering",
+      "author": "Emma DevOps",
+      "thumbnail": "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800",
+      "progress": 0,
+      "domain": "Tech",
+      "description": "Master CI/CD and modern deployment practices."
+    },
+    {
+      "id": 9,
+      "title": "Data Science Fundamentals",
+      "author": "Dr. Data",
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+      "progress": 0,
+      "domain": "Data Science",
+      "description": "Introduction to data analysis and machine learning."
+    },
+    {
+      "id": 10,
+      "title": "Machine Learning Advanced",
+      "author": "Prof. James Lee",
+      "thumbnail": "https://images.unsplash.com/photo-1527474305487-b87b222841cc?w=800",
+      "progress": 0,
+      "domain": "Data Science",
+      "description": "Advanced ML algorithms and applications."
+    },
+    {
+      "id": 11,
+      "title": "Big Data Analytics",
+      "author": "Sarah Analytics",
+      "thumbnail": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800",
+      "progress": 0,
+      "domain": "Data Science",
+      "description": "Master Hadoop, Spark, and data warehousing."
+    },
+    {
+      "id": 12,
+      "title": "Deep Learning Specialization",
+      "author": "Dr. Neural",
+      "thumbnail": "https://images.unsplash.com/photo-1527474305487-b87b222841cc?w=800",
+      "progress": 0,
+      "domain": "Data Science",
+      "description": "Neural networks and computer vision."
+    },
+    {
+      "id": 13,
+      "title": "Business Strategy",
+      "author": "David Miller",
+      "thumbnail": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+      "progress": 0,
+      "domain": "Business",
+      "description": "Strategic management and business principles."
+    },
+    {
+      "id": 14,
+      "title": "Digital Marketing",
+      "author": "Lisa Marketing",
+      "thumbnail": "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=800",
+      "progress": 0,
+      "domain": "Business",
+      "description": "Master SEO and digital marketing strategies."
+    },
+    {
+      "id": 15,
+      "title": "Entrepreneurship 101",
+      "author": "Mark Startup",
+      "thumbnail": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800",
+      "progress": 0,
+      "domain": "Business",
+      "description": "Start and grow your own business."
+    },
+    {
+      "id": 16,
+      "title": "Project Management",
+      "author": "Project Master",
+      "thumbnail": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+      "progress": 0,
+      "domain": "Business",
+      "description": "Agile methodologies and project management."
+    },
+    {
+      "id": 17,
+      "title": "Japanese Beginner",
+      "author": "Yuki Tanaka",
+      "thumbnail": "https://images.unsplash.com/photo-1523294587484-bae6cc870010?w=800",
+      "progress": 0,
+      "domain": "Language Learning",
+      "description": "Start learning Japanese conversation."
+    },
+    {
+      "id": 18,
+      "title": "Business English",
+      "author": "Emma English",
+      "thumbnail": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800",
+      "progress": 0,
+      "domain": "Language Learning",
+      "description": "Professional English communication."
+    },
+    {
+      "id": 19,
+      "title": "Mandarin Basics",
+      "author": "Li Wei",
+      "thumbnail": "https://images.unsplash.com/photo-1523294587484-bae6cc870010?w=800",
+      "progress": 0,
+      "domain": "Language Learning",
+      "description": "Essential Mandarin Chinese skills."
+    },
+    {
+      "id": 20,
+      "title": "Spanish for Business",
+      "author": "Carlos Rodriguez",
+      "thumbnail": "https://images.unsplash.com/photo-1516307365426-d8ac0056203e?w=800",
+      "progress": 0,
+      "domain": "Language Learning",
+      "description": "Business Spanish language skills."
+    },
+    {
+      "id": 21,
+      "title": "Psychology 101",
+      "author": "Dr. Rachel Green",
+      "thumbnail": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800",
+      "progress": 0,
+      "domain": "Social Science",
+      "description": "Introduction to psychology."
+    },
+    {
+      "id": 22,
+      "title": "Modern Sociology",
+      "author": "Prof. Social",
+      "thumbnail": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800",
+      "progress": 0,
+      "domain": "Social Science",
+      "description": "Understanding social behavior."
+    },
+    {
+      "id": 23,
+      "title": "Political Science",
+      "author": "Dr. Politics",
+      "thumbnail": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800",
+      "progress": 0,
+      "domain": "Social Science",
+      "description": "Political systems and governance."
+    },
+    {
+      "id": 24,
+      "title": "Anthropology",
+      "author": "Dr. Culture",
+      "thumbnail": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800",
+      "progress": 0,
+      "domain": "Social Science",
+      "description": "Study of human societies."
+    },
+    {
+      "id": 25,
+      "title": "Network Security",
+      "author": "Security Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800",
+      "progress": 0,
+      "domain": "IT",
+      "description": "Cybersecurity fundamentals."
+    },
+    {
+      "id": 26,
+      "title": "System Administration",
+      "author": "Admin Master",
+      "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+      "progress": 0,
+      "domain": "IT",
+      "description": "Server administration skills."
+    },
+    {
+      "id": 27,
+      "title": "IT Service Management",
+      "author": "Service Pro",
+      "thumbnail": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800",
+      "progress": 0,
+      "domain": "IT",
+      "description": "ITIL framework and best practices."
+    },
+    {
+      "id": 28,
+      "title": "Database Administration",
+      "author": "DB Master",
+      "thumbnail": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800",
+      "progress": 0,
+      "domain": "IT",
+      "description": "Managing enterprise databases."
+    },
+    {
+      "id": 29,
+      "title": "Algorithms & Data Structures",
+      "author": "Prof. Code",
+      "thumbnail": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+      "progress": 0,
+      "domain": "Computer Science",
+      "description": "Fundamental CS concepts."
+    },
+    {
+      "id": 30,
+      "title": "Operating Systems",
+      "author": "OS Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800",
+      "progress": 0,
+      "domain": "Computer Science",
+      "description": "OS architecture and design."
+    },
+    {
+      "id": 31,
+      "title": "Compiler Design",
+      "author": "Compiler Pro",
+      "thumbnail": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+      "progress": 0,
+      "domain": "Computer Science",
+      "description": "Building compilers."
+    },
+    {
+      "id": 32,
+      "title": "Computer Architecture",
+      "author": "Hardware Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800",
+      "progress": 0,
+      "domain": "Computer Science",
+      "description": "Computer organization basics."
+    },
+    {
+      "id": 33,
+      "title": "Leadership Skills",
+      "author": "Lead Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800",
+      "progress": 0,
+      "domain": "Personal Development",
+      "description": "Develop leadership abilities."
+    },
+    {
+      "id": 34,
+      "title": "Time Management",
+      "author": "Productivity Pro",
+      "thumbnail": "https://images.unsplash.com/photo-1435527173128-983b87201f4d?w=800",
+      "progress": 0,
+      "domain": "Personal Development",
+      "description": "Boost your productivity."
+    },
+    {
+      "id": 35,
+      "title": "Emotional Intelligence",
+      "author": "EQ Expert",
+      "thumbnail": "https://images.unsplash.com/photo-1552581234-26160f608093?w=800",
+      "progress": 0,
+      "domain": "Personal Development",
+      "description": "Enhance your EQ skills."
+    },
+    {
+      "id": 36,
+      "title": "Public Speaking",
+      "author": "Speaking Pro",
+      "thumbnail": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800",
+      "progress": 0,
+      "domain": "Personal Development",
+      "description": "Master public speaking."
     }
   ],
   "investments": [

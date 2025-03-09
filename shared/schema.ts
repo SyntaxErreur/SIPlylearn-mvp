@@ -16,13 +16,14 @@ export const courseSchema = z.object({
   description: z.string(),
   domain: z.string(),
   thumbnail: z.string(),
+  author: z.string(),
   progress: z.number().nullable().default(0),
+  price: z.number().default(0),
 });
 
 // Investment schema
 export const investmentSchema = z.object({
   id: z.number(),
-  userId: z.number(),
   courseId: z.number(),
   amount: z.number(),
   duration: z.number(),

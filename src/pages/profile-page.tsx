@@ -16,6 +16,8 @@ import {
   TrendingUp,
   ArrowLeft,
   ChevronRight,
+  Info,
+  Pencil,
 } from "lucide-react";
 
 export default function ProfilePage() {
@@ -24,15 +26,25 @@ export default function ProfilePage() {
     queryKey: ["/api/investments"],
   });
 
-  const totalSavings = investments.reduce(
-    (sum, inv) => sum + Number(inv.amount) * 30 * inv.duration,
-    0
-  );
+  const totalSavings = investments.reduce((sum, inv) => {
+    if (inv.type === 'sip') {
+      return sum + (Number(inv.amount) * 30 * inv.duration);
+    }
+    // For one-time payments
+    return sum + Number(inv.amount);
+  }, 0);
+
   const totalReturns = investments.reduce((sum, inv) => {
-    const duration = inv.duration;
-    const returnRate =
-      duration <= 3 ? 0 : duration <= 6 ? 0.01 : duration <= 9 ? 0.02 : 0.04;
-    return sum + Number(inv.amount) * 30 * duration * returnRate;
+    if (inv.type === 'sip') {
+      const duration = inv.duration;
+      // Apply different APY based on duration
+      const apy = duration <= 3 ? 0 : 
+                 duration <= 6 ? 0.02 : 
+                 duration <= 9 ? 0.04 : 0.08;
+      return sum + (Number(inv.amount) * 30 * duration * (apy * (duration/12)));
+    }
+    // For one-time payments, apply a fixed 1% return
+    return sum + (Number(inv.amount) * 0.01);
   }, 0);
 
   if (!user) return null;
@@ -73,7 +85,16 @@ export default function ProfilePage() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-2xl font-bold">{user.fullName}</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold">{user.fullName}</h1>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              </div>
               <p className="text-muted-foreground">{user.email}</p>
             </div>
           </div>
@@ -92,7 +113,7 @@ export default function ProfilePage() {
                 ${totalReturns.toFixed(2)}
               </p>
               <p className="text-sm text-muted-foreground mt-2">
-                Average return rate of 2% APY
+                Average return rate of {((totalReturns/totalSavings) * 100).toFixed(1)}% ROS
               </p>
             </Card>
           </div>
@@ -149,6 +170,23 @@ export default function ProfilePage() {
                       <p className="font-medium">Analytics</p>
                       <p className="text-sm text-muted-foreground">
                         View detailed statistics
+                      </p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                </Button>
+              </Link>
+              <Link href="/about">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-between p-4 h-auto hover:bg-primary/5 rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Info className="h-5 w-5 text-primary" />
+                    <div className="text-left">
+                      <p className="font-medium">About SIPly</p>
+                      <p className="text-sm text-muted-foreground">
+                        Learn more about our platform
                       </p>
                     </div>
                   </div>

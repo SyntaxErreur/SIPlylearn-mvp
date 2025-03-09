@@ -87,7 +87,7 @@ export default function AchievementsPage() {
               <div>
                 <h3 className="text-lg font-medium">SIPly Rewards</h3>
                 <p className="text-3xl font-bold">${totalRewards.toFixed(2)}</p>
-                <p className="text-sm text-muted-foreground">2% APY on investments</p>
+                <p className="text-sm text-muted-foreground">2% ROS on investments</p>
               </div>
             </div>
           </Card>
