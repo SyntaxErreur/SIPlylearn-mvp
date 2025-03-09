@@ -111,26 +111,31 @@ export default function HomePage() {
           <div className="bg-primary/10 rounded-lg p-6">
             <h3 className="text-lg font-medium mb-2">SIPly Savings</h3>
             <p className="text-3xl font-bold">
-              ${metrics.totalSavings.toFixed(2)}
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {ongoingCourses.length > 0
-                ? `Invested across ${ongoingCourses.length} active courses`
-                : "Start your investment journey today"}
+              $
+              {localStorage.getItem("SIP")
+                ? (
+                    JSON.parse(localStorage.getItem("SIP") as string).amount ||
+                    0
+                  ).toFixed(2)
+                : "0.00"}
             </p>
           </div>
           <div className="bg-primary/10 rounded-lg p-6">
             <h3 className="text-lg font-medium mb-2">SIPly Rewards</h3>
             <p className="text-3xl font-bold text-primary">
-              ${metrics.totalReturns.toFixed(2)}
+              $0.00
               <span className="text-sm font-normal text-muted-foreground ml-2">
-                ({metrics.rosPercentage}% ROS)
+                (
+                {localStorage.getItem("SIP")
+                  ? (
+                      parseFloat(
+                        JSON.parse(localStorage.getItem("SIP") as string)
+                          .returnsPercentage
+                      ) || 0
+                    ).toFixed(2)
+                  : "0.00"}
+                % ROS)
               </span>
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {ongoingCourses.length > 0
-                ? "Projected annual returns"
-                : "Invest to start earning rewards"}
             </p>
           </div>
         </div>

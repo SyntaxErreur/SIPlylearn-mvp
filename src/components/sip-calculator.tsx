@@ -9,8 +9,22 @@ import { Card, CardContent } from "../components/ui/card";
 import { queryClient } from "../lib/queryClient";
 import { format } from "date-fns";
 import { useToast } from "../hooks/use-toast";
-import { Check, X, TrendingUp, Calendar, DollarSign, PiggyBank, Lock } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import {
+  Check,
+  X,
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  PiggyBank,
+  Lock,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { apiRequest } from "../lib/api";
 
 interface SipCalculatorProps {
@@ -18,7 +32,7 @@ interface SipCalculatorProps {
 }
 
 const sipDurationOptions = [3, 6, 9, 12] as const;
-type SipDuration = typeof sipDurationOptions[number];
+type SipDuration = (typeof sipDurationOptions)[number];
 
 interface PlanFeatures {
   savedAmount: number;
@@ -32,11 +46,14 @@ interface Investment {
   courseId: number;
   amount: number;
   duration: number;
-  type: 'sip' | 'full';
+  type: "sip" | "full";
   startDate: string;
 }
 
-const getPlanFeatures = (duration: number, dailyAmount: number): PlanFeatures => {
+const getPlanFeatures = (
+  duration: number,
+  dailyAmount: number
+): PlanFeatures => {
   const savedAmount = dailyAmount * 30 * duration;
   const getROS = (months: number): number => {
     if (months <= 3) return 0;
@@ -50,10 +67,13 @@ const getPlanFeatures = (duration: number, dailyAmount: number): PlanFeatures =>
     savedAmount: savedAmount,
     rewardAmount: Number(rewardAmount.toFixed(2)),
     showAds: duration <= 6,
-    domainAccess: duration <= 3 ? "Selected domain only" :
-                 duration <= 6 ? "Two domains access" :
-                 "All domains access",
-    certification: duration <= 3 ? "-" : "University certified courses"
+    domainAccess:
+      duration <= 3
+        ? "Selected domain only"
+        : duration <= 6
+        ? "Two domains access"
+        : "All domains access",
+    certification: duration <= 3 ? "-" : "University certified courses",
   };
   return features;
 };
@@ -65,9 +85,8 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
   const [, setLocation] = useLocation();
 
-
   const { data: courses = [] } = useQuery<Course[]>({
-    queryKey: ['/api/courses']
+    queryKey: ["/api/courses"],
   });
 
   const { data: course } = useQuery<Course>({
@@ -79,15 +98,15 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
   const monthlyAmount = dailyAmount * 30;
   const totalAmount = monthlyAmount * duration;
 
-  const domains = Array.from(new Set(courses.map(course => course.domain)));
+  const domains = Array.from(new Set(courses.map((course) => course.domain)));
 
   const needsDomainSelection = duration <= 6;
   const maxDomains = duration === 3 ? 1 : duration === 6 ? 2 : domains.length;
 
   const handleDomainChange = (domain: string) => {
-    setSelectedDomains(prev => {
+    setSelectedDomains((prev) => {
       if (prev.includes(domain)) {
-        return prev.filter(d => d !== domain);
+        return prev.filter((d) => d !== domain);
       }
       if (prev.length < maxDomains) {
         return [...prev, domain];
@@ -102,7 +121,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/investments'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/investments"] });
       toast({
         title: "Investment created",
         description: "Your SIP plan has been set up successfully!",
@@ -128,16 +147,32 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       return;
     }
 
-    // Store the SIP details in localStorage for use after terms acceptance
-    const pendingSIP = {
+    console.log(selectedDomains);
+    console.log(needsDomainSelection);
+    console.log(duration);
+    console.log("amount", amount);
+
+    // Calculate returns percentage
+    const features = getPlanFeatures(duration, amount);
+    const returnsPercentage =
+      features.rewardAmount > 0
+        ? ((features.rewardAmount / features.savedAmount) * 100).toFixed(1)
+        : "0";
+
+    // Update or store the SIP details in localStorage for use after terms acceptance
+    const existingSip = localStorage.getItem("SIP");
+    const sipDetails = {
       courseId,
       amount,
       duration,
-      type: 'sip' as const,
-      startDate: new Date().toISOString(),
+      type: "sip" as const,
+      startDate: existingSip
+        ? JSON.parse(existingSip).startDate
+        : new Date().toISOString(),
+      returnsPercentage: returnsPercentage, // Added returns percentage as string
     };
 
-    localStorage.setItem('pendingSIP', JSON.stringify(pendingSIP));
+    localStorage.setItem("SIP", JSON.stringify(sipDetails));
 
     // Redirect to terms page
     setLocation("/terms");
@@ -165,7 +200,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                 <Card
                   key={months}
                   className={`p-4 cursor-pointer transition-all hover:shadow-md ${
-                    duration === months ? 'border-primary bg-primary/5' : ''
+                    duration === months ? "border-primary bg-primary/5" : ""
                   }`}
                   onClick={() => setDuration(months)}
                 >
@@ -173,7 +208,12 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                     <div className="text-2xl font-bold">{months}</div>
                     <div className="text-sm">Months</div>
                     <div className="text-xs font-medium mt-2 px-2 py-0.5 bg-primary/10 rounded-full">
-                      {features.rewardAmount > 0 ? `${(features.rewardAmount / features.savedAmount * 100).toFixed(1)}% ROS` : "No Rewards"}
+                      {features.rewardAmount > 0
+                        ? `${(
+                            (features.rewardAmount / features.savedAmount) *
+                            100
+                          ).toFixed(1)}% ROS`
+                        : "No Rewards"}
                     </div>
                   </div>
                   <div className="space-y-2 text-sm border-t pt-3">
@@ -197,14 +237,16 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                     )}
                   </div>
 
-                  {(months === duration && needsDomainSelection) && (
+                  {months === duration && needsDomainSelection && (
                     <div className="mt-4 pt-3 border-t">
                       <div className="flex items-center gap-2 mb-2">
                         <Lock className="h-4 w-4 text-primary" />
-                        <span className="text-sm font-medium">Select Domains ({selectedDomains.length}/{maxDomains})</span>
+                        <span className="text-sm font-medium">
+                          Select Domains ({selectedDomains.length}/{maxDomains})
+                        </span>
                       </div>
                       <div className="space-y-2">
-                        {domains.map(domain => (
+                        {domains.map((domain) => (
                           <button
                             key={domain}
                             onClick={(e) => {
@@ -213,8 +255,8 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                             }}
                             className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${
                               selectedDomains.includes(domain)
-                                ? 'bg-primary text-primary-foreground'
-                                : 'bg-muted hover:bg-muted/80'
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted hover:bg-muted/80"
                             }`}
                           >
                             {domain}
@@ -268,15 +310,15 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                   <p className="text-3xl font-bold">
                     ${totalAmount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-muted-foreground">Total Investment</p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Investment
+                  </p>
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-primary">
                     ${currentPlan.rewardAmount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    SIPly Reward
-                  </p>
+                  <p className="text-sm text-muted-foreground">SIPly Reward</p>
                 </div>
               </div>
 

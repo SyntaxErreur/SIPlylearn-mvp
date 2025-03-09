@@ -27,24 +27,23 @@ export default function ProfilePage() {
   });
 
   const totalSavings = investments.reduce((sum, inv) => {
-    if (inv.type === 'sip') {
-      return sum + (Number(inv.amount) * 30 * inv.duration);
+    if (inv.type === "sip") {
+      return sum + Number(inv.amount) * 30 * inv.duration;
     }
     // For one-time payments
     return sum + Number(inv.amount);
   }, 0);
 
   const totalReturns = investments.reduce((sum, inv) => {
-    if (inv.type === 'sip') {
+    if (inv.type === "sip") {
       const duration = inv.duration;
       // Apply different APY based on duration
-      const apy = duration <= 3 ? 0 : 
-                 duration <= 6 ? 0.02 : 
-                 duration <= 9 ? 0.04 : 0.08;
-      return sum + (Number(inv.amount) * 30 * duration * (apy * (duration/12)));
+      const apy =
+        duration <= 3 ? 0 : duration <= 6 ? 0.02 : duration <= 9 ? 0.04 : 0.08;
+      return sum + Number(inv.amount) * 30 * duration * (apy * (duration / 12));
     }
     // For one-time payments, apply a fixed 1% return
-    return sum + (Number(inv.amount) * 0.01);
+    return sum + Number(inv.amount) * 0.01;
   }, 0);
 
   if (!user) return null;
@@ -102,18 +101,32 @@ export default function ProfilePage() {
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card className="p-6 bg-card/50 backdrop-blur-sm">
               <h3 className="text-lg font-medium mb-2">SIPly Savings</h3>
-              <p className="text-3xl font-bold">${totalSavings.toFixed(2)}</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Across {investments.length} active investments
+              <p className="text-3xl font-bold">
+                $
+                {localStorage.getItem("SIP")
+                  ? (
+                      JSON.parse(localStorage.getItem("SIP") as string)
+                        .amount || 0
+                    ).toFixed(2)
+                  : "0.00"}
               </p>
             </Card>
             <Card className="p-6 bg-card/50 backdrop-blur-sm">
               <h3 className="text-lg font-medium mb-2">SIPly Returns</h3>
               <p className="text-3xl font-bold text-primary">
-                ${totalReturns.toFixed(2)}
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Average return rate of {((totalReturns/totalSavings) * 100).toFixed(1)}% ROS
+                $0.00
+                <span className="text-sm font-normal text-muted-foreground ml-2">
+                  (
+                  {localStorage.getItem("SIP")
+                    ? (
+                        parseFloat(
+                          JSON.parse(localStorage.getItem("SIP") as string)
+                            .returnsPercentage
+                        ) || 0
+                      ).toFixed(2)
+                    : "0.00"}
+                  % ROS)
+                </span>
               </p>
             </Card>
           </div>
