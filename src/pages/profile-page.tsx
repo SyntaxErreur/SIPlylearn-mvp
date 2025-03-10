@@ -214,7 +214,7 @@ export default function ProfilePage() {
           <div className="p-4">
             <h2 className="font-semibold text-lg mb-4">Learning Resources</h2>
             <div className="space-y-2">
-              <Link href="/my-courses">
+              {/* <Link href="/my-courses">
                 <Button
                   variant="ghost"
                   className="w-full justify-between p-4 h-auto hover:bg-primary/5 rounded-lg"
@@ -235,7 +235,7 @@ export default function ProfilePage() {
                     <ChevronRight className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </Button>
-              </Link>
+              </Link> */}
               <Link href="/certificates">
                 <Button
                   variant="ghost"

@@ -62,6 +62,40 @@ export default function HomePage() {
     investments.some((inv) => inv.courseId === course.id)
   );
 
+  // Define greetings in different languages
+  const greetings = [
+    "Hello",
+    "Bonjour",
+    "Hola",
+    "Ciao",
+    "こんにちは",
+    "안녕하세요",
+    "Hallo",
+  ];
+  const [greetingIndex, setGreetingIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Trigger fade-out
+      setIsFading(true);
+      // After fade-out duration, update greeting randomly and fade back in
+      setTimeout(() => {
+        setGreetingIndex((prev) => {
+          let nextIndex = prev;
+          // Ensure new greeting is different from the current one
+          while (nextIndex === prev) {
+            nextIndex = Math.floor(Math.random() * greetings.length);
+          }
+          return nextIndex;
+        });
+        setIsFading(false);
+      }, 500); // 500ms fade duration
+    }, 2000); // Change greeting every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [greetings.length]);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background sticky top-0 z-10">
@@ -75,7 +109,17 @@ export default function HomePage() {
               />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
+              <h1 className="text-2xl font-bold">
+                <span
+                  style={{
+                    opacity: isFading ? 0 : 1,
+                    transition: "opacity 0.5s ease-in-out",
+                  }}
+                >
+                  {greetings[greetingIndex]}
+                </span>
+                , {user?.username}
+              </h1>
               <p className="text-muted-foreground">
                 Welcome back to your learning journey
               </p>
@@ -266,7 +310,7 @@ export default function HomePage() {
               ))}
           </div>
 
-          <div className="mt-12 text-center">
+          {/* <div className="mt-12 text-center">
             <h3 className="text-xl font-semibold mb-4">
               Want to explore more courses?
             </h3>
@@ -281,7 +325,7 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </main>
     </div>
