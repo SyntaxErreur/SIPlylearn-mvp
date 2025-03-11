@@ -17,31 +17,31 @@ const leaderboardData = [
 
 export default function ActivityPage() {
   const { user } = useAuth();
-  
+
   // Mock user stats - would come from API
   const userStats = {
-    totalHours: 82,
-    rank: 12,
-    totalUsers: 234,
-    weeklyProgress: 75,
+    totalHours: 0,
+    rank: 122,
+    totalUsers: 12527,
+    weeklyProgress: 2,
   };
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            className="hover:bg-transparent hover:text-primary transition-colors" 
+          <Button
+            variant="ghost"
+            className="hover:bg-transparent hover:text-primary transition-colors"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
           <Link href="/">
-            <img 
-              src="/SIPlyLearn-purple.png" 
-              alt="SIPlyLearn Logo" 
+            <img
+              src="/SIPlyLearn-purple.png"
+              alt="SIPlyLearn Logo"
               className="h-8 cursor-pointer"
             />
           </Link>
@@ -51,7 +51,9 @@ export default function ActivityPage() {
       <div className="container mx-auto px-4 py-8 space-y-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">My Learning Activity</h1>
-          <p className="text-muted-foreground">Track your progress and compare with other learners</p>
+          <p className="text-muted-foreground">
+            Track your progress and compare with other learners
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -95,18 +97,18 @@ export default function ActivityPage() {
         <div className="mt-12">
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Learning Leaderboard</h2>
+              <h2 className="text-xl font-semibold mb-6">
+                Learning Leaderboard
+              </h2>
               <div className="space-y-4">
                 {leaderboardData.map((user, index) => (
-                  <div 
-                    key={user.id} 
+                  <div
+                    key={user.id}
                     className={`flex items-center gap-4 p-4 rounded-lg transition-colors
-                      ${index === 0 ? 'bg-primary/10' : 'hover:bg-muted'}`}
+                      ${index === 0 ? "bg-primary/10" : "hover:bg-muted"}`}
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="font-semibold">
-                        {user.rank}
-                      </span>
+                      <span className="font-semibold">{user.rank}</span>
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium">{user.name}</h3>
@@ -115,10 +117,15 @@ export default function ActivityPage() {
                       </p>
                     </div>
                     {index < 3 && (
-                      <Trophy className={`h-5 w-5 
-                        ${index === 0 ? 'text-yellow-500' : 
-                          index === 1 ? 'text-gray-400' : 
-                          'text-amber-600'}`} 
+                      <Trophy
+                        className={`h-5 w-5 
+                        ${
+                          index === 0
+                            ? "text-yellow-500"
+                            : index === 1
+                            ? "text-gray-400"
+                            : "text-amber-600"
+                        }`}
                       />
                     )}
                   </div>

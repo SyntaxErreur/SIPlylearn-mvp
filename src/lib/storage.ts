@@ -1,7 +1,7 @@
-import { User, Course, Investment, InsertUser } from "./schema";
+import { User, Course, Saving, InsertUser } from "./schema";
 
 const STORAGE_KEYS = {
-  INVESTMENTS: 'investments',
+  SavingS: 'Savings',
   COURSES: 'courses',
   USERS: 'users',
   CURRENT_USER: 'currentUser'
@@ -20,38 +20,38 @@ const storage = {
   }
 };
 
-// Initialize localStorage with empty investments if not exists
-if (!storage.get(STORAGE_KEYS.INVESTMENTS)) {
-  storage.set(STORAGE_KEYS.INVESTMENTS, []);
+// Initialize localStorage with empty Savings if not exists
+if (!storage.get(STORAGE_KEYS.SavingS)) {
+  storage.set(STORAGE_KEYS.SavingS, []);
 }
 
 export const storageService = {
-  // Investment related methods
-  getInvestments: (): Investment[] => {
-    return storage.get(STORAGE_KEYS.INVESTMENTS) || [];
+  // Saving related methods
+  getSavings: (): Saving[] => {
+    return storage.get(STORAGE_KEYS.SavingS) || [];
   },
 
-  createInvestment: (investment: Omit<Investment, 'id'>): Investment => {
-    const investments = storage.get<Investment[]>(STORAGE_KEYS.INVESTMENTS) || [];
-    const newInvestment = {
-      ...investment,
-      id: investments.length + 1
+  createSaving: (Saving: Omit<Saving, 'id'>): Saving => {
+    const Savings = storage.get<Saving[]>(STORAGE_KEYS.SavingS) || [];
+    const newSaving = {
+      ...Saving,
+      id: Savings.length + 1
     };
-    const updatedInvestments = [...investments, newInvestment];
-    storage.set(STORAGE_KEYS.INVESTMENTS, updatedInvestments);
+    const updatedSavings = [...Savings, newSaving];
+    storage.set(STORAGE_KEYS.SavingS, updatedSavings);
 
     // Also dispatch event directly for immediate updates
     window.dispatchEvent(new Event('storage-updated'));
 
-    return newInvestment;
+    return newSaving;
   },
 
-  // Calculate investment metrics
-  calculateInvestmentMetrics: () => {
-    const investments = storage.get<Investment[]>(STORAGE_KEYS.INVESTMENTS) || [];
+  // Calculate Saving metrics
+  calculateSavingMetrics: () => {
+    const Savings = storage.get<Saving[]>(STORAGE_KEYS.SavingS) || [];
 
-    // If no investments, return zero values
-    if (!investments || investments.length === 0) {
+    // If no Savings, return zero values
+    if (!Savings || Savings.length === 0) {
       return {
         totalSavings: 0,
         totalReturns: 0,
@@ -60,7 +60,7 @@ export const storageService = {
     }
 
     // Calculate total savings
-    const totalSavings = investments.reduce((sum, inv) => {
+    const totalSavings = Savings.reduce((sum, inv) => {
       if (inv.type === 'sip') {
         return sum + (Number(inv.amount) * 30 * inv.duration);
       }
@@ -68,7 +68,7 @@ export const storageService = {
     }, 0);
 
     // Calculate total returns
-    const totalReturns = investments.reduce((sum, inv) => {
+    const totalReturns = Savings.reduce((sum, inv) => {
       if (inv.type === 'sip') {
         const duration = inv.duration;
         const apy = duration <= 3 ? 0 :

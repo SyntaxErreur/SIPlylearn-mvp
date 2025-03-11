@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Course, Investment } from "../lib/schema";
+import { Course, Saving } from "../lib/schema";
 import { useAuth } from "../hooks/use-auth";
 import CourseCard from "../components/course-card";
 import { Button } from "../components/ui/button";
@@ -17,14 +17,14 @@ export default function HomePage() {
     queryKey: ['/api/courses']
   });
 
-  const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ['/api/investments']
+  const { data: Savings = [] } = useQuery<Saving[]>({
+    queryKey: ['/api/Savings']
   });
 
-  const totalSavings = investments.reduce((sum, inv) => sum + Number(inv.amount) * 30 * inv.duration, 0);
+  const totalSavings = Savings.reduce((sum, inv) => sum + Number(inv.amount) * 30 * inv.duration, 0);
   const domains = ["Finance", "Tech"];
 
-  const ongoingCourses = courses.filter(course => investments.some(inv => inv.courseId === course.id));
+  const ongoingCourses = courses.filter(course => Savings.some(inv => inv.courseId === course.id));
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -32,7 +32,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
-            <p className="text-muted-foreground">Welcome, let's start invest for life</p>
+            <p className="text-muted-foreground">Welcome, let's start Save for life</p>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
@@ -80,10 +80,10 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Link href="/investments">
+          <Link href="/Savings">
             <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
               <TrendingUp className="h-6 w-6 mb-2 text-primary" />
-              <h3 className="font-medium">My Investments</h3>
+              <h3 className="font-medium">My Savings</h3>
             </Card>
           </Link>
           <Link href="/returns">

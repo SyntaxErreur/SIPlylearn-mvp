@@ -7,12 +7,12 @@ export async function apiRequest(
   data?: any
 ): Promise<Response> {
   // For local storage-based implementation
-  if (endpoint === '/api/investments' && method === 'POST') {
+  if (endpoint === '/api/Savings' && method === 'POST') {
     const { storageService } = await import('./storage');
     try {
-      const investment = storageService.createInvestment(data);
+      const Saving = storageService.createSaving(data);
       // Create a response with the same structure as a fetch response
-      return new Response(JSON.stringify(investment), {
+      return new Response(JSON.stringify(Saving), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });

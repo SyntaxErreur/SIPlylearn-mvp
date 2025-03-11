@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Investment } from "../lib/schema";
+import { Saving } from "../lib/schema";
 import { Card } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
 import { Button } from "../components/ui/button";
@@ -7,57 +7,60 @@ import { ArrowLeft, Star, Award, TrendingUp, Target } from "lucide-react";
 import { Link } from "wouter";
 
 export default function AchievementsPage() {
-  const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ['/api/investments']
+  const { data: Savings = [] } = useQuery<Saving[]>({
+    queryKey: ["/api/Savings"],
   });
 
-  const totalInvestment = investments.reduce((sum, inv) => sum + (inv.amount * 30 * inv.duration), 0);
-  const totalRewards = totalInvestment * 0.02; // 2% rewards rate
+  const totalSaving = Savings.reduce(
+    (sum, inv) => sum + inv.amount * 30 * inv.duration,
+    0
+  );
+  const totalRewards = totalSaving * 0.02; // 2% rewards rate
 
   // Mock achievements data - in production this would come from API
   const achievements = [
     {
-      title: "First Investment",
-      description: "Started your first SIP investment",
-      progress: 100,
+      title: "First Saving",
+      description: "Started your first SIP Saving",
+      progress: 8,
       completed: true,
     },
     {
       title: "Consistent Learner",
       description: "Completed 30 days of continuous learning",
-      progress: 80,
+      progress: 14,
       completed: false,
     },
     {
       title: "Domain Master",
       description: "Completed all courses in a domain",
-      progress: 60,
+      progress: 12,
       completed: false,
     },
     {
-      title: "Investment Pro",
+      title: "Saving Pro",
       description: "Saved more than $1000 through SIPs",
-      progress: (totalInvestment / 1000) * 100,
-      completed: totalInvestment >= 1000,
-    }
+      progress: 5,
+      completed: 14,
+    },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            className="hover:bg-transparent hover:text-primary transition-colors" 
+          <Button
+            variant="ghost"
+            className="hover:bg-transparent hover:text-primary transition-colors"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
           <Link href="/">
-            <img 
-              src="/SIPlyLearn-purple.png" 
-              alt="SIPlyLearn Logo" 
+            <img
+              src="/SIPlyLearn-purple.png"
+              alt="SIPlyLearn Logo"
               className="h-8 cursor-pointer"
             />
           </Link>
@@ -67,7 +70,9 @@ export default function AchievementsPage() {
       <div className="container mx-auto px-4 py-8 space-y-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">Total Achievements</h1>
-          <p className="text-muted-foreground">Track your learning and investment milestones</p>
+          <p className="text-muted-foreground">
+            Track your learning and Saving milestones
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -75,8 +80,8 @@ export default function AchievementsPage() {
             <div className="flex items-center gap-4">
               <TrendingUp className="h-8 w-8 text-primary" />
               <div>
-                <h3 className="text-lg font-medium">Total Investment</h3>
-                <p className="text-3xl font-bold">${totalInvestment.toFixed(2)}</p>
+                <h3 className="text-lg font-medium">Total Saving</h3>
+                <p className="text-3xl font-bold">$0</p>
               </div>
             </div>
           </Card>
@@ -86,8 +91,10 @@ export default function AchievementsPage() {
               <Star className="h-8 w-8 text-primary" />
               <div>
                 <h3 className="text-lg font-medium">SIPly Rewards</h3>
-                <p className="text-3xl font-bold">${totalRewards.toFixed(2)}</p>
-                <p className="text-sm text-muted-foreground">2% ROS on investments</p>
+                <p className="text-3xl font-bold">$0</p>
+                <p className="text-sm text-muted-foreground">
+                  2% ROS on Savings
+                </p>
               </div>
             </div>
           </Card>
@@ -98,9 +105,12 @@ export default function AchievementsPage() {
               <div>
                 <h3 className="text-lg font-medium">Learning Goals</h3>
                 <p className="text-3xl font-bold">
-                  {achievements.filter(a => a.completed).length}/{achievements.length}
+                  {achievements.filter((a) => a.completed).length}/
+                  {achievements.length}
                 </p>
-                <p className="text-sm text-muted-foreground">Achievements completed</p>
+                <p className="text-sm text-muted-foreground">
+                  Achievements completed
+                </p>
               </div>
             </div>
           </Card>

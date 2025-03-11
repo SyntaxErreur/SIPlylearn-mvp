@@ -5,7 +5,7 @@ export const mockCourses: Course[] = [
   {
     id: 1,
     title: "Master in Finance (Zero to Hero)",
-    description: "Comprehensive course covering financial markets, investment strategies, and risk management.",
+    description: "Comprehensive course covering financial markets, Saving strategies, and risk management.",
     domain: "Finance",
     thumbnail: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3",
     author: "Chanuka Saranga",
@@ -22,8 +22,8 @@ export const mockCourses: Course[] = [
   },
   {
     id: 3,
-    title: "Investment Banking Fundamentals",
-    description: "Learn the basics of investment banking, mergers & acquisitions, and corporate finance.",
+    title: "Saving Banking Fundamentals",
+    description: "Learn the basics of Saving banking, mergers & acquisitions, and corporate finance.",
     domain: "Finance",
     thumbnail: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f",
     author: "Robert Morgan",

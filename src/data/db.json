@@ -7,16 +7,16 @@
       "thumbnail": "https://images.unsplash.com/photo-1579532536935-619928decd08?w=800",
       "progress": 43,
       "domain": "Finance",
-      "description": "A comprehensive guide to financial markets and investment strategies."
+      "description": "A comprehensive guide to financial markets and Saving strategies."
     },
     {
       "id": 2,
-      "title": "Investment Banking Fundamentals",
+      "title": "Saving Banking Fundamentals",
       "author": "Robert Morgan",
       "thumbnail": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800",
       "progress": 0,
       "domain": "Finance",
-      "description": "Learn the basics of investment banking and corporate finance."
+      "description": "Learn the basics of Saving banking and corporate finance."
     },
     {
       "id": 3,
@@ -325,7 +325,7 @@
       "description": "Master public speaking."
     }
   ],
-  "investments": [
+  "Savings": [
     {
       "id": 1,
       "courseId": 1,

@@ -10,8 +10,8 @@ const getMockQueryFn = (queryKey: string[]) => {
       return mockService.getCurrentUser();
     case '/api/courses':
       return mockService.getCourses();
-    case '/api/investments':
-      return mockService.getInvestments();
+    case '/api/Savings':
+      return mockService.getSavings();
     default:
       if (endpoint.startsWith('/api/course/')) {
         const id = parseInt(endpoint.split('/').pop() || '0');
@@ -32,8 +32,8 @@ export const mockMutations = {
   logout: async () => {
     return mockService.logout();
   },
-  createInvestment: async (investment: any) => {
-    return mockService.createInvestment(investment);
+  createSaving: async (Saving: any) => {
+    return mockService.createSaving(Saving);
   }
 };
 

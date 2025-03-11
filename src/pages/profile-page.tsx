@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "../hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
-import { Investment } from "../lib/schema";
+import { Saving } from "../lib/schema";
 import { Link } from "wouter";
 import { Button } from "../components/ui/button";
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
@@ -22,11 +22,11 @@ import {
 
 export default function ProfilePage() {
   const { user, logoutMutation } = useAuth();
-  const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ["/api/investments"],
+  const { data: Savings = [] } = useQuery<Saving[]>({
+    queryKey: ["/api/Savings"],
   });
 
-  const totalSavings = investments.reduce((sum, inv) => {
+  const totalSavings = Savings.reduce((sum, inv) => {
     if (inv.type === "sip") {
       return sum + Number(inv.amount) * 30 * inv.duration;
     }
@@ -34,7 +34,7 @@ export default function ProfilePage() {
     return sum + Number(inv.amount);
   }, 0);
 
-  const totalReturns = investments.reduce((sum, inv) => {
+  const totalReturns = Savings.reduce((sum, inv) => {
     if (inv.type === "sip") {
       const duration = inv.duration;
       // Apply different APY based on duration
@@ -136,9 +136,9 @@ export default function ProfilePage() {
       <div className="container mx-auto p-4 space-y-6 max-w-4xl">
         <Card className="overflow-hidden bg-card/50 backdrop-blur-sm">
           <div className="p-4">
-            <h2 className="font-semibold text-lg mb-4">Investment Journey</h2>
+            <h2 className="font-semibold text-lg mb-4">Saving Journey</h2>
             <div className="space-y-2">
-              <Link href="/investments">
+              {/* <Link href="/Savings">
                 <Button
                   variant="ghost"
                   className="w-full justify-between p-4 h-auto hover:bg-primary/5 rounded-lg"
@@ -146,16 +146,16 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-3">
                     <Wallet className="h-5 w-5 text-primary" />
                     <div className="text-left">
-                      <p className="font-medium">My Investments</p>
+                      <p className="font-medium">My Savings</p>
                       <p className="text-sm text-muted-foreground">
-                        Track your SIP investments
+                        Track your SIP Savings
                       </p>
                     </div>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </Button>
-              </Link>
-              <Link href="/returns">
+              </Link> */}
+              {/* <Link href="/returns">
                 <Button
                   variant="ghost"
                   className="w-full justify-between p-4 h-auto hover:bg-primary/5 rounded-lg"
@@ -171,7 +171,7 @@ export default function ProfilePage() {
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </Button>
-              </Link>
+              </Link> */}
               <Link href="/analytics">
                 <Button
                   variant="ghost"
@@ -230,7 +230,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
-                      {investments.length} Active
+                      {Savings.length} Active
                     </span>
                     <ChevronRight className="h-5 w-5 text-muted-foreground" />
                   </div>

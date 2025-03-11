@@ -2,7 +2,7 @@
   "name": "workspace",
   "version": "1.0.0",
   "private": true,
-  "description": "A comprehensive learning platform that combines tech education with investment-based course access.",
+  "description": "A comprehensive learning platform that combines tech education with Saving-based course access.",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5000",
     "build": "vite build",

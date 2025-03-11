@@ -1,4 +1,4 @@
-import { User, Course, Investment, InsertUser } from "./schema";
+import { User, Course, Saving, InsertUser } from "./schema";
 import dbData from "../data/db.json";
 
 // Helper to manage localStorage
@@ -16,8 +16,8 @@ const storage = {
 if (!storage.get('courses')) {
   storage.set('courses', dbData.courses);
 }
-if (!storage.get('investments')) {
-  storage.set('investments', dbData.investments);
+if (!storage.get('Savings')) {
+  storage.set('Savings', dbData.Savings);
 }
 
 export const mockService = {
@@ -72,18 +72,18 @@ export const mockService = {
     return dbData.courses.find(c => c.id === id);
   },
 
-  // Investments - use db.json data
-  getInvestments: (): Investment[] => {
-    return dbData.investments;
+  // Savings - use db.json data
+  getSavings: (): Saving[] => {
+    return dbData.Savings;
   },
 
-  createInvestment: (investment: Omit<Investment, 'id'>): Investment => {
-    const investments = storage.get<Investment[]>('investments') || [];
-    const newInvestment = {
-      ...investment,
-      id: investments.length + 1
+  createSaving: (Saving: Omit<Saving, 'id'>): Saving => {
+    const Savings = storage.get<Saving[]>('Savings') || [];
+    const newSaving = {
+      ...Saving,
+      id: Savings.length + 1
     };
-    storage.set('investments', [...investments, newInvestment]);
-    return newInvestment;
+    storage.set('Savings', [...Savings, newSaving]);
+    return newSaving;
   }
 };

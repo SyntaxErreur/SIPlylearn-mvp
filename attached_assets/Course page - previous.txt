@@ -32,7 +32,7 @@ const courseContents = [
     ],
   },
   {
-    title: "Investment Basics",
+    title: "Saving Basics",
     lectures: [
       {
         title: "Reading Financial Statements",

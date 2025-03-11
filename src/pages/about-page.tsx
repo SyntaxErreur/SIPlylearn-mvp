@@ -8,18 +8,18 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            className="hover:bg-transparent hover:text-primary transition-colors" 
+          <Button
+            variant="ghost"
+            className="hover:bg-transparent hover:text-primary transition-colors"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Profile
           </Button>
           <Link href="/">
-            <img 
-              src="/SIPlyLearn-purple.png" 
-              alt="SIPlyLearn Logo" 
+            <img
+              src="/SIPlyLearn-purple.png"
+              alt="SIPlyLearn Logo"
               className="h-8 cursor-pointer"
             />
           </Link>
@@ -30,7 +30,7 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">About SIPlyLearn</h1>
           <p className="text-xl text-muted-foreground">
-            Your Gateway to Financial Education and Smart Investment Learning
+            Your Gateway to Financial Education and Smart Saving Learning
           </p>
         </div>
 
@@ -38,10 +38,10 @@ export default function AboutPage() {
           <Card className="p-6">
             <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
             <p className="text-muted-foreground leading-relaxed">
-              SIPlyLearn is dedicated to making financial education accessible and affordable 
-              through our innovative Systematic Investment Plan (SIP) approach. We believe that 
-              quality education should be available to everyone, regardless of their financial 
-              background.
+              At SIPly.Learn, we make quality education both accessible and
+              affordable through our Systematic Investment Plan (SIP) model. We
+              believe that financial constraints should never be a barrier to
+              learning.
             </p>
           </Card>
 
@@ -52,9 +52,11 @@ export default function AboutPage() {
                   <BookOpen className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Quality Education</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Premium Courses
+                  </h3>
                   <p className="text-muted-foreground">
-                    Access premium courses crafted by industry experts in finance and technology.
+                    Learn from top industry experts in their domains.
                   </p>
                 </div>
               </div>
@@ -66,9 +68,11 @@ export default function AboutPage() {
                   <DollarSign className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Flexible Payments</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Flexible Payments
+                  </h3>
                   <p className="text-muted-foreground">
-                    Pay for your education through affordable daily, weekly, or monthly installments.
+                    Pay in easy daily, weekly, or monthly installments.
                   </p>
                 </div>
               </div>
@@ -80,9 +84,11 @@ export default function AboutPage() {
                   <Target className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Track Progress</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Progress Tracking
+                  </h3>
                   <p className="text-muted-foreground">
-                    Monitor your learning journey with detailed analytics and progress tracking.
+                    Stay on top of your learning with detailed analytics
                   </p>
                 </div>
               </div>
@@ -94,9 +100,12 @@ export default function AboutPage() {
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Community</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Community Support
+                  </h3>
                   <p className="text-muted-foreground">
-                    Join a growing community of learners and share your success stories.
+                    Connect, collaborate, and share success stories with
+                    like-minded learners.
                   </p>
                 </div>
               </div>
@@ -104,19 +113,29 @@ export default function AboutPage() {
           </div>
 
           <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Why Choose SIPlyLearn?</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              Why Choose SIPlyLearn?
+            </h2>
             <div className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                SIPlyLearn combines the power of systematic investment with quality education. 
-                Our platform not only helps you learn but also builds a habit of consistent 
-                investment in your future.
+                We blend smart investment habits with high-quality education,
+                ensuring you not only gain knowledge but also develop financial
+                discipline.
               </p>
-              <ul className="space-y-2 text-muted-foreground">
-                <li className="flex items-center gap-2">✓ Earn rewards while you learn</li>
-                <li className="flex items-center gap-2">✓ Industry-recognized certificates</li>
-                <li className="flex items-center gap-2">✓ Expert-led courses</li>
-                <li className="flex items-center gap-2">✓ Flexible learning paths</li>
-              </ul>
+              {/* <ul className="space-y-2 text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  ✓ Earn rewards while you learn
+                </li>
+                <li className="flex items-center gap-2">
+                  ✓ Industry-recognized certificates
+                </li>
+                <li className="flex items-center gap-2">
+                  ✓ Expert-led courses
+                </li>
+                <li className="flex items-center gap-2">
+                  ✓ Flexible learning paths
+                </li>
+              </ul> */}
             </div>
           </Card>
 

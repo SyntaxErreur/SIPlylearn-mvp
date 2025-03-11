@@ -18,13 +18,6 @@ import {
   PiggyBank,
   Lock,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import { apiRequest } from "../lib/api";
 
 interface SipCalculatorProps {
@@ -34,6 +27,13 @@ interface SipCalculatorProps {
 const sipDurationOptions = [3, 6, 9, 12] as const;
 type SipDuration = (typeof sipDurationOptions)[number];
 
+const summaryFrequencyOptions = [
+  "daily",
+  "weekly",
+  "monthly",
+  "yearly",
+] as const;
+
 interface PlanFeatures {
   savedAmount: number;
   rewardAmount: number;
@@ -42,7 +42,7 @@ interface PlanFeatures {
   certification: string;
 }
 
-interface Investment {
+interface Saving {
   courseId: number;
   amount: number;
   duration: number;
@@ -56,15 +56,16 @@ const getPlanFeatures = (
 ): PlanFeatures => {
   const savedAmount = dailyAmount * 30 * duration;
   const getROS = (months: number): number => {
-    if (months <= 3) return 0;
-    if (months <= 6) return 0.02;
-    if (months <= 9) return 0.04;
-    return 0.08;
+    if (months === 3) return 0;
+    if (months === 6) return 0.01;
+    if (months === 9) return 0.02;
+    if (months === 12) return 0.04;
+    return 0;
   };
   const apy = getROS(duration);
-  const rewardAmount = savedAmount * (apy * (duration / 12));
-  const features: PlanFeatures = {
-    savedAmount: savedAmount,
+  const rewardAmount = savedAmount * apy;
+  return {
+    savedAmount,
     rewardAmount: Number(rewardAmount.toFixed(2)),
     showAds: duration <= 6,
     domainAccess:
@@ -75,7 +76,6 @@ const getPlanFeatures = (
         : "All domains access",
     certification: duration <= 3 ? "-" : "University certified courses",
   };
-  return features;
 };
 
 export default function SipCalculator({ courseId }: SipCalculatorProps) {
@@ -83,6 +83,8 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
   const [duration, setDuration] = useState<number>(3);
   const [amount, setAmount] = useState<number>(1);
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
+  // New state for summary frequency selection using clickable boxes
+  const [summaryFrequency, setSummaryFrequency] = useState("daily");
   const [, setLocation] = useLocation();
 
   const { data: courses = [] } = useQuery<Course[]>({
@@ -115,22 +117,22 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
     });
   };
 
-  const createInvestmentMutation = useMutation({
-    mutationFn: async (investment: Investment) => {
-      const res = await apiRequest("POST", "/api/investments", investment);
+  const createSavingMutation = useMutation({
+    mutationFn: async (saving: Saving) => {
+      const res = await apiRequest("POST", "/api/Savings", saving);
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/investments"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/Savings"] });
       toast({
-        title: "Investment created",
+        title: "Saving created",
         description: "Your SIP plan has been set up successfully!",
       });
       setLocation("/");
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to create investment",
+        title: "Failed to create Saving",
         description: error.message,
         variant: "destructive",
       });
@@ -147,19 +149,13 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       return;
     }
 
-    console.log(selectedDomains);
-    console.log(needsDomainSelection);
-    console.log(duration);
-    console.log("amount", amount);
-
-    // Calculate returns percentage
+    // Calculate returns percentage for display purposes
     const features = getPlanFeatures(duration, amount);
     const returnsPercentage =
       features.rewardAmount > 0
         ? ((features.rewardAmount / features.savedAmount) * 100).toFixed(1)
         : "0";
 
-    // Update or store the SIP details in localStorage for use after terms acceptance
     const existingSip = localStorage.getItem("SIP");
     const sipDetails = {
       courseId,
@@ -169,25 +165,25 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       startDate: existingSip
         ? JSON.parse(existingSip).startDate
         : new Date().toISOString(),
-      returnsPercentage: returnsPercentage, // Added returns percentage as string
+      returnsPercentage,
+      summaryFrequency, // include the selected summary frequency
     };
 
     localStorage.setItem("SIP", JSON.stringify(sipDetails));
-
-    // Redirect to terms page
     setLocation("/terms");
   };
 
   return (
     <div className="space-y-8 p-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">SIPly Investment Plan</h2>
+        <h2 className="text-2xl font-bold mb-2">SIPly Saving Plan</h2>
         <p className="text-muted-foreground">
-          Invest smart in your education with our flexible SIP plans
+          Save smart in your education with our flexible SIP plans
         </p>
       </div>
 
       <div className="space-y-8">
+        {/* Plan Duration Section */}
         <div>
           <div className="flex items-center gap-2 mb-4">
             <Calendar className="h-5 w-5 text-primary" />
@@ -271,10 +267,11 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
           </div>
         </div>
 
+        {/* Daily Saving Section */}
         <div>
           <div className="flex items-center gap-2 mb-4">
             <DollarSign className="h-5 w-5 text-primary" />
-            <Label className="text-lg">Daily Investment</Label>
+            <Label className="text-lg">Daily Saving</Label>
           </div>
           <Card className="p-6">
             <Slider
@@ -298,11 +295,36 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
           </Card>
         </div>
 
+        {/* New Saving Summary Frequency Section with 4 boxes */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Label className="text-lg">Select Summary Frequency</Label>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {summaryFrequencyOptions.map((option) => (
+              <Card
+                key={option}
+                className={`p-4 cursor-pointer transition-all text-sm hover:shadow-md text-center ${
+                  summaryFrequency === option
+                    ? "border-primary bg-primary/5"
+                    : ""
+                }`}
+                onClick={() => setSummaryFrequency(option)}
+              >
+                <div className="font-bold">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Saving Summary Section */}
         <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-6">
               <PiggyBank className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">Investment Summary</h3>
+              <h3 className="text-lg font-semibold">Saving Summary</h3>
             </div>
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4 text-center">
@@ -310,9 +332,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                   <p className="text-3xl font-bold">
                     ${totalAmount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Total Investment
-                  </p>
+                  <p className="text-sm text-muted-foreground">Total Saving</p>
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-primary">
@@ -341,7 +361,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
             disabled={needsDomainSelection && selectedDomains.length === 0}
           >
             <TrendingUp className="h-5 w-5 mr-2" />
-            Start Your Investment Journey
+            Start Your Saving Journey
           </Button>
           <p className="text-sm text-muted-foreground text-center">
             Your plan will complete on{" "}

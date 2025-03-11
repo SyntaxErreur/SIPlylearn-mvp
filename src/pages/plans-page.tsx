@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Investment } from "../lib/schema";
+import { Saving } from "../lib/schema";
 import { Card } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
 import { Button } from "../components/ui/button";
@@ -15,8 +15,8 @@ import {
 } from "date-fns";
 
 export default function PlansPage() {
-  const { data: investments = [] } = useQuery<Investment[]>({
-    queryKey: ["/api/investments"],
+  const { data: Savings = [] } = useQuery<Saving[]>({
+    queryKey: ["/api/Savings"],
   });
 
   // Add dummy active plan
@@ -24,36 +24,45 @@ export default function PlansPage() {
     id: 1,
     amount: 5,
     duration: 6,
-    startDate: "2024-02-01",
+    startDate: "2025-03-01",
     paymentSchedule: "daily", // or "weekly" or "monthly"
   };
 
-  const totalInvestment = activePlan.amount * 30 * activePlan.duration;
+  const totalSaving = activePlan.amount * 30 * activePlan.duration;
   const startDate = new Date(activePlan.startDate);
   const endDate = addMonths(startDate, activePlan.duration);
   const progress = Math.min(
     Math.round(
       ((new Date().getTime() - startDate.getTime()) /
         (endDate.getTime() - startDate.getTime())) *
-        100,
+        100
     ),
-    100,
+    100
   );
 
-  // Generate calendar dates
+  // Generate calendar dates for the current month
   const currentMonth = startOfMonth(new Date());
   const daysInMonth = getDaysInMonth(currentMonth);
-  const today = new Date();
+
+  // Define the cutoff date: all dates on or before the 7th are marked as "paid"
+  const cutoffDate = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    7
+  );
 
   const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
     const date = new Date(
       currentMonth.getFullYear(),
       currentMonth.getMonth(),
-      i + 1,
+      i + 1
     );
     return {
       date,
-      status: isBefore(date, today) ? "paid" : "pending",
+      status:
+        isBefore(date, cutoffDate) || isSameDay(date, cutoffDate)
+          ? "paid"
+          : "pending",
     };
   });
 
@@ -91,15 +100,15 @@ export default function PlansPage() {
           <div className="flex items-center gap-4 mb-6">
             <DollarSign className="h-8 w-8 text-primary" />
             <div>
-              <h3 className="text-lg font-medium">Total Savings Value</h3>
-              <p className="text-3xl font-bold">${totalInvestment}</p>
+              <h3 className="text-lg font-medium">Total Savings </h3>
+              <p className="text-3xl font-bold">$35</p>
             </div>
           </div>
 
           <div className="border-t pt-6">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h4 className="font-medium">SIPly Savings Plan</h4>
+                <h4 className="font-medium">SIPly Savings </h4>
                 <p className="text-sm text-muted-foreground">
                   ${activePlan.amount} daily for {activePlan.duration} months
                 </p>
@@ -150,7 +159,7 @@ export default function PlansPage() {
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                     (day) => (
                       <div key={day}>{day}</div>
-                    ),
+                    )
                   )}
                 </div>
                 <div className="grid grid-cols-7 gap-2">
@@ -158,14 +167,16 @@ export default function PlansPage() {
                   {Array.from({ length: currentMonth.getDay() }).map(
                     (_, index) => (
                       <div key={`empty-${index}`} className="h-16" />
-                    ),
+                    )
                   )}
 
                   {calendarDays.map((day, index) => (
                     <div
                       key={index}
                       className={`p-2 rounded-md ${
-                        isSameDay(day.date, today) ? "ring-2 ring-primary" : ""
+                        isSameDay(day.date, new Date())
+                          ? "ring-2 ring-primary"
+                          : ""
                       } ${
                         day.status === "paid"
                           ? "bg-primary/20 text-primary"
@@ -182,7 +193,9 @@ export default function PlansPage() {
                         {day.status}
                       </div>
                       {day.status === "paid" && (
-                        <div className="text-xs mt-1">${activePlan.amount}</div>
+                        <div className="text-xs mt-1">
+                          ${activePlan.amount}+
+                        </div>
                       )}
                     </div>
                   ))}

@@ -30,7 +30,7 @@ export default function AuthPage() {
   if (user) {
     const isNewUser = !localStorage.getItem("hasCompletedOnboarding");
     if (isNewUser) {
-      setLocation("/onboarding");
+      setLocation("/");
     } else {
       setLocation("/");
     }
@@ -76,7 +76,7 @@ export default function AuthPage() {
       <div className="hidden lg:flex flex-1 bg-primary items-center justify-center p-8">
         <div className="max-w-lg">
           <h1 className="text-4xl font-bold mb-4 text-primary-foreground">
-            Invest in Your Future
+            Save for Your Future
           </h1>
           <p className="text-lg text-primary-foreground/90">
             Access quality courses with flexible payment options. Learn at your
@@ -179,7 +179,7 @@ function RegisterForm() {
 
     try {
       await registerMutation.mutateAsync(data);
-      setLocation("/onboarding");
+      setLocation("/");
     } catch (error) {
       console.error("Registration failed:", error);
     }

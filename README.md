@@ -1,6 +1,6 @@
 # SIPlylearn Platform
 
-A comprehensive learning platform that combines tech education with investment-based course access.
+A comprehensive learning platform that combines tech education with Saving-based course access.
 
 ## Prerequisites
 
@@ -43,8 +43,8 @@ The application will start on `http://localhost:5000`
 ## Features
 
 - React frontend with Tailwind CSS
-- SIP-based investment model for course access
-- Profile management and investment tracking
+- SIP-based Saving model for course access
+- Profile management and Saving tracking
 - Responsive mobile-first design
 - Mock data persistence using localStorage
 

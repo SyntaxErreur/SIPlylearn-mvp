@@ -21,8 +21,8 @@ export const courseSchema = z.object({
   price: z.number().default(0),
 });
 
-// Investment schema
-export const investmentSchema = z.object({
+// Saving schema
+export const SavingSchema = z.object({
   id: z.number(),
   courseId: z.number(),
   amount: z.number(),
@@ -34,7 +34,7 @@ export const investmentSchema = z.object({
 // Export types
 export type User = z.infer<typeof userSchema>;
 export type Course = z.infer<typeof courseSchema>;
-export type Investment = z.infer<typeof investmentSchema>;
+export type Saving = z.infer<typeof SavingSchema>;
 
 // Insert schemas (omit auto-generated fields)
 export const insertUserSchema = userSchema.omit({ id: true });
@@ -43,8 +43,8 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export const insertCourseSchema = courseSchema.omit({ id: true });
 export type InsertCourse = z.infer<typeof insertCourseSchema>;
 
-export const insertInvestmentSchema = investmentSchema.omit({ id: true });
-export type InsertInvestment = z.infer<typeof insertInvestmentSchema>;
+export const insertSavingSchema = SavingSchema.omit({ id: true });
+export type InsertSaving = z.infer<typeof insertSavingSchema>;
 
 // SIP related types
 export const sipDurationOptions = [3, 6, 9, 12] as const;

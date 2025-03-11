@@ -26,23 +26,21 @@ import { storageService } from "../lib/storage";
 export default function HomePage() {
   const { user } = useAuth();
   const [selectedDomain, setSelectedDomain] = useState<string>("Finance");
-  const [investments, setInvestments] = useState(() =>
-    storageService.getInvestments()
-  );
+  const [Savings, setSavings] = useState(() => storageService.getSavings());
   const [metrics, setMetrics] = useState(() =>
-    storageService.calculateInvestmentMetrics()
+    storageService.calculateSavingMetrics()
   );
 
   const { data: courses = mockCourses } = useQuery<Course[]>({
     queryKey: ["/api/courses"],
   });
 
-  // Update metrics and investments when storage changes
+  // Update metrics and Savings when storage changes
   useEffect(() => {
     const handleStorageUpdate = () => {
-      const newInvestments = storageService.getInvestments();
-      setInvestments(newInvestments);
-      setMetrics(storageService.calculateInvestmentMetrics());
+      const newSavings = storageService.getSavings();
+      setSavings(newSavings);
+      setMetrics(storageService.calculateSavingMetrics());
     };
 
     // Update on mount and when storage changes
@@ -59,7 +57,7 @@ export default function HomePage() {
   }, []);
 
   const ongoingCourses = courses.filter((course) =>
-    investments.some((inv) => inv.courseId === course.id)
+    Savings.some((inv) => inv.courseId === course.id)
   );
 
   // Define greetings in different languages
@@ -121,7 +119,7 @@ export default function HomePage() {
                 , {user?.username}
               </h1>
               <p className="text-muted-foreground">
-                Welcome back to your learning journey
+                <b>S</b>tudy . <b>I</b>nvest . <b>P</b>erform
               </p>
             </div>
           </div>
@@ -292,7 +290,7 @@ export default function HomePage() {
                   className="rounded-full px-4 whitespace-nowrap"
                   onClick={() => setSelectedDomain(domain)}
                 >
-                  {domain} ({courses.filter((c) => c.domain === domain).length})
+                  {domain}
                 </Button>
               ))}
             </div>
