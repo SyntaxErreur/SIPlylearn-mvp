@@ -117,7 +117,10 @@ export default function PlansPage() {
                 <p className="font-medium">
                   ${activePlan.amount * 30 * activePlan.duration}
                 </p>
-                <p className="text-sm text-muted-foreground">Total Value</p>
+                <p className="text-sm text-muted-foreground">
+                  {" "}
+                  Estimated Total Value
+                </p>
               </div>
             </div>
 

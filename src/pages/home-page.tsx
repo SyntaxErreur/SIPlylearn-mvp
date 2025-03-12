@@ -97,8 +97,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-8">
+        <div className="container mx-auto px-4 py-4 flex flex-row md:flex-row justify-between items-center">
+          {/* Left Section: Logo and Greeting */}
+          <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto">
             <Link href="/">
               <img
                 src="/SIPlyLearn-purple.png"
@@ -106,8 +107,8 @@ export default function HomePage() {
                 className="h-8 cursor-pointer"
               />
             </Link>
-            <div>
-              <h1 className="text-2xl font-bold">
+            <div className="flex flex-col">
+              <h1 className="text-xl md:text-2xl font-bold">
                 <span
                   style={{
                     opacity: isFading ? 0 : 1,
@@ -116,15 +117,19 @@ export default function HomePage() {
                 >
                   {greetings[greetingIndex]}
                 </span>
-                , {user?.username}
+                {", "} {user?.username}
               </h1>
-              <p className="text-muted-foreground">
+              {/* Hide the tagline on mobile to save space */}
+              <p className="text-sm text-muted-foreground hidden md:block">
                 <b>S</b>tudy . <b>I</b>nvest . <b>P</b>erform
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-sm bg-primary/5 px-4 py-2 rounded-full">
+
+          {/* Right Section: Community Info, Notifications & Profile */}
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            {/* Hide community info on extra small screens */}
+            <div className="hidden sm:flex items-center gap-2 text-xs md:text-sm bg-primary/5 px-3 py-1 rounded-full">
               <Users className="h-4 w-4 text-primary" />
               <span className="font-medium">12.5k+</span>
               <span className="text-muted-foreground">Community Members</span>

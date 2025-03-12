@@ -27,12 +27,7 @@ interface SipCalculatorProps {
 const sipDurationOptions = [3, 6, 9, 12] as const;
 type SipDuration = (typeof sipDurationOptions)[number];
 
-const summaryFrequencyOptions = [
-  "daily",
-  "weekly",
-  "monthly",
-  "yearly",
-] as const;
+const summaryFrequencyOptions = ["daily", "weekly", "monthly"] as const;
 
 interface PlanFeatures {
   savedAmount: number;
@@ -178,7 +173,10 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       <div className="text-center">
         <h2 className="text-2xl font-bold mb-2">SIPly Saving Plan</h2>
         <p className="text-muted-foreground">
-          Save smart in your education with our flexible SIP plans
+          Sip it and set up an automatic recurring savings plan to unlock access
+          to <strong className="text-primary">NOT JUST ONE COURSE</strong>, but{" "}
+          <strong className="text-primary">ALL COURSES</strong> within your
+          selected domains.
         </p>
       </div>
 
@@ -241,7 +239,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                           Select Domains ({selectedDomains.length}/{maxDomains})
                         </span>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-2 max-h-[100px] overflow-y-auto">
                         {domains.map((domain) => (
                           <button
                             key={domain}
@@ -298,9 +296,9 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
         {/* New Saving Summary Frequency Section with 4 boxes */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Label className="text-lg">Select Summary Frequency</Label>
+            <Label className="text-lg">Select FlexiPayout</Label>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {summaryFrequencyOptions.map((option) => (
               <Card
                 key={option}
