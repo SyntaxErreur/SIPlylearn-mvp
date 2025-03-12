@@ -108,7 +108,7 @@ export default function HomePage() {
               />
             </Link>
             <div className="flex flex-col">
-              <h1 className="text-xl md:text-2xl font-bold">
+              <h1 className="text-l md:text-2xl font-bold">
                 <span
                   style={{
                     opacity: isFading ? 0 : 1,
