@@ -179,7 +179,7 @@ function RegisterForm() {
 
     try {
       await registerMutation.mutateAsync(data);
-      setLocation("/");
+      setLocation("/onboarding");
     } catch (error) {
       console.error("Registration failed:", error);
     }

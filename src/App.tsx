@@ -21,6 +21,7 @@ import AnalyticsPage from "./pages/analytics-page";
 import NotFound from "./pages/not-found";
 import AboutPage from "./pages/about-page";
 import TermsFullPage from "./pages/terms-full";
+import SipSummaryPage from "./pages/sipsummary-page";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <ProtectedRoute path="/onboarding" component={OnboardingPage} />
       <ProtectedRoute path="/activity" component={ActivityPage} />
       <ProtectedRoute path="/terms" component={TermsPage} />
+      <ProtectedRoute path="/summary" component={SipSummaryPage} />
       <ProtectedRoute path="/terms/full" component={TermsFullPage} />
       <ProtectedRoute path="/payment" component={PaymentPage} />
       <ProtectedRoute path="/plans" component={PlansPage} />
