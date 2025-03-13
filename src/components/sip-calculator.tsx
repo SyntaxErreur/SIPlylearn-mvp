@@ -45,10 +45,7 @@ interface Saving {
   startDate: string;
 }
 
-const getPlanFeatures = (
-  duration: number,
-  dailyAmount: number
-): PlanFeatures => {
+function getPlanFeatures(duration: number, dailyAmount: number): PlanFeatures {
   const savedAmount = dailyAmount * 30 * duration;
   const getROS = (months: number): number => {
     if (months === 3) return 0;
@@ -59,6 +56,7 @@ const getPlanFeatures = (
   };
   const apy = getROS(duration);
   const rewardAmount = savedAmount * apy;
+
   return {
     savedAmount,
     rewardAmount: Number(rewardAmount.toFixed(2)),
@@ -71,14 +69,13 @@ const getPlanFeatures = (
         : "All domains access",
     certification: duration <= 3 ? "-" : "University certified courses",
   };
-};
+}
 
 export default function SipCalculator({ courseId }: SipCalculatorProps) {
   const { toast } = useToast();
   const [duration, setDuration] = useState<number>(3);
   const [amount, setAmount] = useState<number>(1);
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
-  // New state for summary frequency selection using clickable boxes
   const [summaryFrequency, setSummaryFrequency] = useState("daily");
   const [, setLocation] = useLocation();
 
@@ -110,6 +107,12 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
       }
       return [...prev.slice(1), domain];
     });
+  };
+
+  // New function to handle immediate storage of summaryFrequency
+  const handleSummaryFrequencyChange = (option: string) => {
+    setSummaryFrequency(option);
+    localStorage.setItem("SIP_Frequency", option);
   };
 
   const createSavingMutation = useMutation({
@@ -161,10 +164,14 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
         ? JSON.parse(existingSip).startDate
         : new Date().toISOString(),
       returnsPercentage,
-      summaryFrequency, // include the selected summary frequency
+      // include the selected summary frequency
+      summaryFrequency,
     };
 
+    // Save the entire plan to local storage
     localStorage.setItem("SIP", JSON.stringify(sipDetails));
+
+    // Navigate to terms page
     setLocation("/terms");
   };
 
@@ -293,7 +300,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
           </Card>
         </div>
 
-        {/* New Saving Summary Frequency Section with 4 boxes */}
+        {/* FlexiPayout Selection */}
         <div>
           <div className="flex items-center gap-2 mb-4">
             <Label className="text-lg">Select FlexiPayout</Label>
@@ -307,7 +314,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
                     ? "border-primary bg-primary/5"
                     : ""
                 }`}
-                onClick={() => setSummaryFrequency(option)}
+                onClick={() => handleSummaryFrequencyChange(option)}
               >
                 <div className="font-bold">
                   {option.charAt(0).toUpperCase() + option.slice(1)}
@@ -352,6 +359,7 @@ export default function SipCalculator({ courseId }: SipCalculatorProps) {
           </CardContent>
         </Card>
 
+        {/* Action Button & Completion Date */}
         <div className="space-y-4">
           <Button
             className="w-full h-12 text-lg"

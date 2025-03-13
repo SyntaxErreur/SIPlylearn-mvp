@@ -115,7 +115,7 @@ export default function SipSummaryPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Lock className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium">Summary Frequency</span>
+                  <span className="text-sm font-medium"> FlexiPayout </span>
                 </div>
                 <span className="text-base font-semibold capitalize">
                   {summaryFrequency}
