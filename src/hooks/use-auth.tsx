@@ -101,8 +101,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
-      // Sign up the user
-      const { data: authData, error } = await supabase.auth.signUp({
+      // Sign up the user with Supabase Auth
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
@@ -111,6 +111,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           },
           emailRedirectTo: `${window.location.origin}/auth`
         }
+      });
+
+      if (signUpError) {
+        console.error("Registration error:", signUpError);
+        throw new Error(signUpError.message);
+      }
+
+      if (!authData?.user) {
+        throw new Error('Registration failed - no user returned');
+      }
+
+      // Create a profile record
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: authData.user.id,
+            email: data.email,
+            full_name: data.fullName,
+            created_at: new Date().toISOString()
+          }
+        ]);
+
+      if (profileError) {
+        console.error("Profile creation error:", profileError);
+        throw new Error('Failed to create user profile');
+      }
       });
 
       if (error) throw error;
