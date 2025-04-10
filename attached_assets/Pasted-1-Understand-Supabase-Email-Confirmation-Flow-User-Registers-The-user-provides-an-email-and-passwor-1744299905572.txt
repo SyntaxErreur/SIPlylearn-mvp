@@ -1,0 +1,178 @@
+1. Understand Supabase Email Confirmation Flow
+User Registers
+The user provides an email and password, which Supabase receives via the auth.signUp() method (or a similar endpoint in your code).
+
+Confirmation Email is Sent
+After registration, if email confirmations are enabled in your Supabase Authentication settings, Supabase sends a confirmation link to the user’s email address.
+
+User Clicks Confirmation Link
+The user must click on the link in the email. That link will go to a Supabase-generated page (or a custom page you configure), thereby confirming the user’s email.
+
+User is Marked as Confirmed
+After clicking the link, Supabase updates the user record in the auth.users table (and any associated profile table, if you set one up) to indicate that the email is confirmed.
+
+User Can Now Log In
+Attempts to log in before the email is confirmed will result in an error message:
+
+css
+Copy
+{"code":"email_not_confirmed","message":"Email not confirmed"}
+2. Check Your Supabase Authentication Settings
+Open Your Project in the Supabase Dashboard
+
+Go to app.supabase.com, log in, and select your project.
+
+Navigate to Authentication → Settings
+
+In the left-hand sidebar, click Authentication, then Settings.
+
+Check “Email Confirmations”
+
+Look for “Disable email confirmations” (or something similar). By default, email confirmations are enabled, meaning new signups must click the verification link before logging in.
+
+If you want a frictionless dev setup, you can disable confirmations for local testing. However, in production, you almost always want them enabled.
+
+Check SMTP Settings (If Using Custom Email Provider)
+
+If you are using a custom SMTP service for sending emails, verify those details under Authentication → SMTP in your Supabase settings.
+
+If your SMTP is misconfigured, the confirmation emails may not be sent at all.
+
+Optional: Update Email Templates
+
+You can customize the email subject and body in Authentication → Templates. Make sure your email includes the proper confirmation link placeholder (usually {{ .ConfirmationURL }}).
+
+3. Verify That Confirmation Emails Are Actually Sent and Received
+Check Your Inbox (Including Spam)
+
+Sometimes confirmation emails get filtered as spam or “promotions.”
+
+If you’re certain you’re not receiving any email, move to the next steps.
+
+View Supabase Email Logs
+
+At the time of writing, Supabase does not have a robust UI for email delivery logs, but your SMTP provider might.
+
+If you’re using a custom SMTP, log in to your provider’s dashboard to see if emails were attempted or blocked.
+
+Disable/Re-enable “Email Confirmations” (Temporarily)
+
+If you want to skip email confirmation for testing, disable it in the Authentication settings. Then try signing up again and see if the new user can log in without the “Email not confirmed” error.
+
+4. Manually Confirm a User (Testing/Development Only)
+If you’re 100% sure you want a user to be “confirmed” without clicking an email link (for example, if you can’t receive the email or want to bypass the step temporarily), you can manually confirm them in the auth.users table:
+
+Open “Users”
+
+Go to Authentication → Users in your Supabase dashboard.
+
+Alternatively, if you’re comfortable writing SQL, you can query auth.users directly.
+
+Select the User
+
+You’ll see columns like id, email, phone, role, confirmed_at, etc.
+
+Edit Row (if your project allows manual updates)
+
+Click the pencil icon (or any “Edit” button) to update the user record.
+
+In the advanced table editor, you might be able to edit the confirmed_at column. If you set confirmed_at to a valid date/time (e.g., NOW() or 2025-04-10T10:00:00Z), Supabase will consider the user confirmed.
+
+Save Changes, Re-test Logging In
+
+Try logging in again. You should no longer see “Email not confirmed” if you set confirmed_at properly.
+
+Important: This manual approach is only recommended for dev or admin-level manual overrides. In a real production environment, you want users to confirm via the email link.
+
+5. Ensure Your Front-end Logic Is Correct
+Registration Code
+Make sure that your front-end (React, Next.js, etc.) is calling the right function for sign-up. For instance:
+
+js
+Copy
+const { data, error } = await supabase.auth.signUp({
+  email: 'someone@example.com',
+  password: 'somepassword',
+});
+Check whether you’re seeing any error in the response.
+
+If an error is returned, handle it or log it to see if signups are failing silently.
+
+Check Your Login Code
+
+js
+Copy
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'someone@example.com',
+  password: 'somepassword',
+});
+The error you’re seeing (email_not_confirmed) means sign-up likely succeeded, but the user is in the unconfirmed state.
+
+Look for Race Conditions
+
+Are you trying to sign in immediately after signing up, before the user has time to confirm their email? This is normal if email confirmations are required—Supabase will block login until the user is confirmed.
+
+Check the auth.users Table
+
+In your screenshot, you see entries with “Waiting for verification” under “Last sign in.”
+
+That means Supabase is expecting them to verify their email.
+
+6. Common Pitfalls & How to Avoid Them
+User Expecting Instant Access
+
+Users often expect to log in immediately after signup. Make sure your UI instructs them to check their email for a verification link, or consider disabling email confirmations for dev.
+
+No SMTP Config = No Emails
+
+If you rely on Supabase’s ephemeral email service in a free-tier project, sometimes it can be unreliable or limited. For production, always set up a custom SMTP provider.
+
+Code Overwriting Roles or Confirmation
+
+If your code tries to manually insert a user record in your own profiles table, ensure it’s consistent with what Supabase auth is doing. You don’t want two separate “user” definitions out of sync.
+
+Testing in Incognito Windows or Different Browsers
+
+If your domain or environment is not secure/HTTPS, service worker features and some email-related flows can break. Make sure you’re either on localhost or using an HTTPS domain.
+
+Misconfigured URL
+
+Check Authentication → Settings → Site URL in your Supabase dashboard. If this URL is incorrect, the confirmation link might not point to the right domain or might fail to confirm properly.
+
+7. Final Checklist
+Supabase Dashboard → Authentication → Settings
+
+Confirm that email confirmations are enabled (or temporarily disable them for local testing).
+
+Confirm that the Site URL is correct for your environment.
+
+Supabase Dashboard → Authentication → SMTP
+
+Ensure your SMTP credentials are valid. Test them if possible.
+
+Sign Up Again
+
+Use the supabase.auth.signUp(...) method.
+
+Check your email (spam folders, etc.) for the verification link.
+
+Click the Link
+
+Make sure the user is actually clicking the confirmation link from the email.
+
+Log In
+
+Now that your user is confirmed, log in with supabase.auth.signInWithPassword({...}) or the appropriate function in your code.
+
+Check auth.users Table
+
+Confirm that the user’s confirmed_at is set.
+
+You should no longer see “Waiting for verification.”
+
+If All Else Fails
+
+Manually confirm the user in the dashboard by setting confirmed_at.
+
+Or disable email confirmations for local development until you have everything else stable.
+
