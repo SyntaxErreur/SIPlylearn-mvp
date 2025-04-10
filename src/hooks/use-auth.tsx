@@ -138,9 +138,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error("Profile creation error:", profileError);
         throw new Error('Failed to create user profile');
       }
-      });
-
-      if (error) throw error;
 
       if (!authData.user) {
         throw new Error('Registration failed');
