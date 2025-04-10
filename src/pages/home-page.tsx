@@ -117,7 +117,7 @@ export default function HomePage() {
                 >
                   {greetings[greetingIndex]}
                 </span>
-                {", "} {user?.username || user?.fullName || "User"}
+                {", "} {user?.fullName ? user?.fullName.split(' ')[0] : user?.username || "User"}
               </h1>
               {/* Hide the tagline on mobile to save space */}
               <p className="text-sm text-muted-foreground hidden md:block">
