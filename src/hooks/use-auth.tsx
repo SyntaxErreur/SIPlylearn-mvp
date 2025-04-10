@@ -1,30 +1,26 @@
+
 import { createContext, ReactNode, useContext, useEffect } from "react";
-import {
-  useQuery,
-  useMutation,
-  UseMutationResult,
-} from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import { supabase } from "@/lib/supabase";
 
-// Define types for our user
 type User = {
-  id: number;
+  id: string;
   username: string;
   email: string;
   fullName: string;
 };
 
 type LoginData = {
-  username: string;
+  email: string;
   password: string;
 };
 
 type RegisterData = {
-  username: string;
-  password: string;
   email: string;
+  password: string;
   fullName: string;
 };
 
@@ -32,12 +28,10 @@ type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: UseMutationResult<User, Error, LoginData>;
-  logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<User, Error, RegisterData>;
+  loginMutation: any;
+  logoutMutation: any;
+  registerMutation: any;
 };
-
-const LOCAL_STORAGE_KEY = 'siplylearn_user';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -45,41 +39,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
-  // Check localStorage for existing user data
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useQuery<User | null>({
-    queryKey: ["/api/user"],
-    queryFn: () => {
-      const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return storedUser ? JSON.parse(storedUser) : null;
+  const { data: user, error, isLoading } = useQuery({
+    queryKey: ["auth-user"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+        
+      return profile;
     },
   });
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
-      // Simulated login - in real app, this would be an API call
-      // For demo, we'll just create a mock user
-      const mockUser: User = {
-        id: 1,
-        username: credentials.username,
-        email: `${credentials.username}@example.com`,
-        fullName: credentials.username,
-      };
-
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      return mockUser;
+      const { data, error } = await supabase.auth.signInWithPassword(credentials);
+      if (error) throw error;
+      return data.user;
     },
-    onSuccess: (user: User) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       toast({
         title: "Welcome back!",
-        description: `Successfully logged in as ${user.username}`,
+        description: "Successfully logged in",
       });
       setLocation("/");
     },
@@ -94,22 +80,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
-      // Simulated registration - in real app, this would be an API call
-      const mockUser: User = {
-        id: Math.floor(Math.random() * 1000),
-        username: data.username,
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: data.email,
-        fullName: data.fullName,
-      };
+        password: data.password,
+      });
+      
+      if (signUpError) throw signUpError;
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: authData.user!.id,
+            email: data.email,
+            full_name: data.fullName,
+          },
+        ]);
 
-      return mockUser;
+      if (profileError) throw profileError;
+      return authData.user;
     },
-    onSuccess: (user: User) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       toast({
         title: "Welcome to SIPlylearn!",
         description: "Your account has been created successfully",
@@ -127,12 +119,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.setQueryData(["/api/user"], null);
+      queryClient.setQueryData(["auth-user"], null);
       toast({
         title: "Logged out",
         description: "You have been successfully logged out",
