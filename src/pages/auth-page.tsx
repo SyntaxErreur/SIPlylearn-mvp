@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../hooks/use-auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,15 +27,18 @@ export default function AuthPage() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
 
-  if (user) {
-    const isNewUser = !localStorage.getItem("hasCompletedOnboarding");
-    if (isNewUser) {
-      setLocation("/");
-    } else {
-      setLocation("/");
+  useEffect(() => {
+    if (user) {
+      const isNewUser = !localStorage.getItem("hasCompletedOnboarding");
+      if (isNewUser) {
+        setLocation("/onboarding");
+      } else {
+        setLocation("/");
+      }
     }
-    return null;
-  }
+  }, [user, setLocation]);
+
+  if (user) return null;
 
   return (
     <div className="min-h-screen flex">

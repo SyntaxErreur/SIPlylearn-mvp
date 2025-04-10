@@ -143,7 +143,7 @@ export default function HomePage() {
                 <Button variant="ghost" size="icon">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="bg-primary/20">
-                      {user?.username.charAt(0).toUpperCase()}
+                      {user?.username ? user.username.charAt(0).toUpperCase() : user?.fullName?.charAt(0).toUpperCase() || 'U'}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
