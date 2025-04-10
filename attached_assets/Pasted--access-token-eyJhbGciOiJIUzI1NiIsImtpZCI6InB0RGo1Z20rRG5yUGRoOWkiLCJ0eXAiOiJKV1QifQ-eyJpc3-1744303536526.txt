@@ -1,0 +1,52 @@
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6InB0RGo1Z20rRG5yUGRoOWkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2hubmpvdGRqbmFva3hkdHl2Z2lnLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI2ZmNkMWIwOS0xZWJlLTRiNjQtYjlkYi1hOWQ3YjI5YjBiNmEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MzA3MTIxLCJpYXQiOjE3NDQzMDM1MjEsImVtYWlsIjoiYXJ5YW5zaW5naDYwMTFAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImFyeWFuc2luZ2g2MDExQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJBcnlhbiBTaW5naCIsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiNmZjZDFiMDktMWViZS00YjY0LWI5ZGItYTlkN2IyOWIwYjZhIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NDQzMDM1MjF9XSwic2Vzc2lvbl9pZCI6ImUxMDAzYjAxLTU5ZDctNGUxYS05ZGRkLTQyZmZiYmZkNzRlNSIsImlzX2Fub255bW91cyI6ZmFsc2V9.aihwQDJTgwxTsmDWJ4anrxnIO2Q-csa8RZmroL_oiIw",
+    "token_type": "bearer",
+    "expires_in": 3600,
+    "expires_at": 1744307121,
+    "refresh_token": "qh-MU7pL5kOMeyAEJ8mEbQ",
+    "user": {
+        "id": "6fcd1b09-1ebe-4b64-b9db-a9d7b29b0b6a",
+        "aud": "authenticated",
+        "role": "authenticated",
+        "email": "aryansingh6011@gmail.com",
+        "email_confirmed_at": "2025-04-10T16:43:21.262134Z",
+        "phone": "",
+        "confirmed_at": "2025-04-10T16:43:21.262134Z",
+        "last_sign_in_at": "2025-04-10T16:45:21.252032348Z",
+        "app_metadata": {
+            "provider": "email",
+            "providers": [
+                "email"
+            ]
+        },
+        "user_metadata": {
+            "email": "aryansingh6011@gmail.com",
+            "email_verified": true,
+            "full_name": "Aryan Singh",
+            "phone_verified": false,
+            "sub": "6fcd1b09-1ebe-4b64-b9db-a9d7b29b0b6a"
+        },
+        "identities": [
+            {
+                "identity_id": "9c2456bb-15cb-4a5f-a107-cf153e14a3c2",
+                "id": "6fcd1b09-1ebe-4b64-b9db-a9d7b29b0b6a",
+                "user_id": "6fcd1b09-1ebe-4b64-b9db-a9d7b29b0b6a",
+                "identity_data": {
+                    "email": "aryansingh6011@gmail.com",
+                    "email_verified": false,
+                    "full_name": "Aryan Singh",
+                    "phone_verified": false,
+                    "sub": "6fcd1b09-1ebe-4b64-b9db-a9d7b29b0b6a"
+                },
+                "provider": "email",
+                "last_sign_in_at": "2025-04-10T16:43:21.257519Z",
+                "created_at": "2025-04-10T16:43:21.257589Z",
+                "updated_at": "2025-04-10T16:43:21.257589Z",
+                "email": "aryansingh6011@gmail.com"
+            }
+        ],
+        "created_at": "2025-04-10T16:43:21.248843Z",
+        "updated_at": "2025-04-10T16:45:21.254502Z",
+        "is_anonymous": false
+    }
+}
