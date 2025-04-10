@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -7,9 +7,10 @@ import { supabase } from "@/lib/supabase";
 
 type User = {
   id: string;
-  username: string;
+  username?: string;
   email: string;
   fullName: string;
+  created_at?: string;
 };
 
 type LoginData = {
@@ -34,9 +35,9 @@ type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: any;
-  logoutMutation: any;
-  registerMutation: any;
+  loginMutation: ReturnType<typeof useMutation>;
+  logoutMutation: ReturnType<typeof useMutation>;
+  registerMutation: ReturnType<typeof useMutation>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -44,6 +45,33 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+
+  // Attempt to get initial cached user from localStorage (if available)
+  const cachedUserData =
+    typeof window !== "undefined" ? localStorage.getItem("user-data") : null;
+  const initialUser = cachedUserData
+    ? (JSON.parse(cachedUserData) as User)
+    : null;
+
+  // Rehydrate session on mount if we have tokens.
+  useEffect(() => {
+    const storedAccessToken = localStorage.getItem("sb-access-token");
+    const storedRefreshToken = localStorage.getItem("sb-refresh-token");
+    if (storedAccessToken && storedRefreshToken) {
+      supabase.auth
+        .setSession({
+          access_token: storedAccessToken,
+          refresh_token: storedRefreshToken,
+        })
+        .catch((error) => {
+          console.error("Failed to set session from localStorage", error);
+          // Optionally clear invalid tokens
+          localStorage.removeItem("sb-access-token");
+          localStorage.removeItem("sb-refresh-token");
+          localStorage.removeItem("user-data");
+        });
+    }
+  }, []);
 
   const {
     data: user,
@@ -57,14 +85,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } = await supabase.auth.getUser();
       if (!user) return null;
 
+      // Optionally, you can also refetch extra profile data from your 'profiles' table.
       const { data: profile } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
-
       return profile;
     },
+    // Use cached data from localStorage initially for a faster load.
+    initialData: initialUser,
   });
 
   const loginMutation = useMutation({
@@ -82,15 +112,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw error;
       }
 
-      // Store auth data in localStorage
-      localStorage.setItem('sb-access-token', data.session?.access_token || '');
-      localStorage.setItem('sb-refresh-token', data.session?.refresh_token || '');
-      localStorage.setItem('user-data', JSON.stringify({
+      // Save tokens to localStorage
+      const accessToken = data.session?.access_token || "";
+      const refreshToken = data.session?.refresh_token || "";
+      localStorage.setItem("sb-access-token", accessToken);
+      localStorage.setItem("sb-refresh-token", refreshToken);
+      const userData = {
         id: data.user.id,
         email: data.user.email,
         fullName: data.user.user_metadata.full_name,
-        created_at: data.user.created_at
-      }));
+        created_at: data.user.created_at,
+      };
+      localStorage.setItem("user-data", JSON.stringify(userData));
 
       const { data: profile } = await supabase
         .from("profiles")
@@ -98,10 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .eq("id", data.user.id)
         .single();
 
-      return {
-        ...profile,
-        accessToken: data.session?.access_token
-      };
+      return { ...profile, accessToken };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
@@ -122,7 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
-      // Sign up the user using Supabase Auth
+      // Sign up using Supabase Auth
       const { data: authData, error: signUpError } = await supabase.auth.signUp(
         {
           email: data.email,
@@ -145,8 +175,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error("Registration failed - no user returned");
       }
 
-      // Create a profile record without manually passing the ID.
-      // The database should automatically assign the user's ID via its default value.
+      // Create a profile record.
       const { error: profileError } = await supabase.from("profiles").insert([
         {
           email: data.email,
@@ -195,11 +224,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: async () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
-      // Clear stored auth data
-      localStorage.removeItem('sb-access-token');
-      localStorage.removeItem('sb-refresh-token');
-      localStorage.removeItem('user-data');
+
+      // Clear stored auth data from localStorage
+      localStorage.removeItem("sb-access-token");
+      localStorage.removeItem("sb-refresh-token");
+      localStorage.removeItem("user-data");
     },
     onSuccess: () => {
       queryClient.setQueryData(["auth-user"], null);
