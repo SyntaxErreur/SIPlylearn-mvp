@@ -101,13 +101,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
+      // Sign up the user
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           data: {
-            full_name: data.fullName,
-            username: data.username
+            full_name: data.fullName
           },
           emailRedirectTo: `${window.location.origin}/auth`
         }
@@ -115,17 +115,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      // Always return registration result with confirmation status
+      if (!authData.user) {
+        throw new Error('Registration failed');
+      }
+
+      // Create user profile in profiles table
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([{
+          id: authData.user.id,
+          email: data.email,
+          full_name: data.fullName,
+          created_at: new Date().toISOString()
+        }]);
+
+      if (profileError) throw profileError;
+
       return {
-        user: authData.user,
-        isConfirmed: authData.user?.confirmed_at ? true : false
+        needsEmailConfirmation: !authData.user.confirmed_at,
+        user: authData.user
       };
     },
     onSuccess: (result) => {
-      if (!result.isConfirmed) {
+      if (result.needsEmailConfirmation) {
         toast({
           title: "Check your email",
-          description: "Please click the confirmation link sent to your email",
+          description: "Please click the confirmation link to activate your account",
         });
         setLocation("/auth");
       } else {
