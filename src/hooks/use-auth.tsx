@@ -68,8 +68,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password: credentials.password,
       });
       if (error) {
-        if (error.message === 'Email not confirmed') {
-          throw new Error('Please check your email to confirm your account before logging in');
+        if (error.message.includes('Email not confirmed')) {
+          throw new Error('Please check your email and click the confirmation link to activate your account');
         }
         throw error;
       }
@@ -106,28 +106,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password: data.password,
         options: {
           data: {
-            full_name: data.fullName
+            full_name: data.fullName,
+            username: data.username
           },
           emailRedirectTo: `${window.location.origin}/auth`
         }
       });
+
       if (error) throw error;
-      
-      // Registration successful but needs email confirmation
-      if (authData.user && !authData.user.confirmed_at) {
-        return { 
-          user: authData.user,
-          message: 'Please check your email to confirm your account'
-        };
-      }
-      
-      return authData.user;
+
+      // Always return registration result with confirmation status
+      return {
+        user: authData.user,
+        isConfirmed: authData.user?.confirmed_at ? true : false
+      };
     },
-    onSuccess: (data) => {
-      if (data.message) {
+    onSuccess: (result) => {
+      if (!result.isConfirmed) {
         toast({
-          title: "Registration successful",
-          description: data.message,
+          title: "Check your email",
+          description: "Please click the confirmation link sent to your email",
         });
         setLocation("/auth");
       } else {
@@ -138,9 +136,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
         setLocation("/");
       }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       toast({
         title: "Welcome to SIPlylearn!",
         description: "Your account has been created successfully",
