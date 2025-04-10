@@ -91,9 +91,6 @@ export default function AuthPage() {
 function LoginForm() {
   const { loginMutation } = useAuth();
   const form = useForm({
-    resolver: zodResolver(
-      insertUserSchema.pick({ email: true, password: true })
-    ),
     defaultValues: {
       email: "",
       password: "",

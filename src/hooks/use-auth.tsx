@@ -68,7 +68,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password: credentials.password,
       });
       if (error) throw error;
-      return data.user;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+        
+      return profile;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
