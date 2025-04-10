@@ -24,6 +24,13 @@ type RegisterData = {
   fullName: string;
 };
 
+type Profile = {
+  id: string;
+  email: string;
+  full_name: string;
+  created_at?: string;
+};
+
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
@@ -57,7 +64,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
-      const { data, error } = await supabase.auth.signInWithPassword(credentials);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      });
       if (error) throw error;
       return data.user;
     },

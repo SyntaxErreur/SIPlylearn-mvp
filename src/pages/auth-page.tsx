@@ -92,10 +92,10 @@ function LoginForm() {
   const { loginMutation } = useAuth();
   const form = useForm({
     resolver: zodResolver(
-      insertUserSchema.pick({ username: true, password: true })
+      insertUserSchema.pick({ email: true, password: true })
     ),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -108,12 +108,12 @@ function LoginForm() {
       >
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your username" {...field} />
+                <Input placeholder="Enter your email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
