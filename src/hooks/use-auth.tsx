@@ -82,13 +82,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw error;
       }
 
+      // Store auth data in localStorage
+      localStorage.setItem('sb-access-token', data.session?.access_token || '');
+      localStorage.setItem('sb-refresh-token', data.session?.refresh_token || '');
+      localStorage.setItem('user-data', JSON.stringify({
+        id: data.user.id,
+        email: data.user.email,
+        fullName: data.user.user_metadata.full_name,
+        created_at: data.user.created_at
+      }));
+
       const { data: profile } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", data.user.id)
         .single();
 
-      return profile;
+      return {
+        ...profile,
+        accessToken: data.session?.access_token
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
@@ -182,6 +195,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: async () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      
+      // Clear stored auth data
+      localStorage.removeItem('sb-access-token');
+      localStorage.removeItem('sb-refresh-token');
+      localStorage.removeItem('user-data');
     },
     onSuccess: () => {
       queryClient.setQueryData(["auth-user"], null);
