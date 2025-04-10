@@ -1,4 +1,3 @@
-
 import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
@@ -51,13 +50,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
-      
+
       const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
-        
+
       return profile;
     },
   });
@@ -90,24 +89,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+      const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            full_name: data.fullName
+          }
+        }
       });
-      
-      if (signUpError) throw signUpError;
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: authData.user!.id,
-            email: data.email,
-            full_name: data.fullName,
-          },
-        ]);
-
-      if (profileError) throw profileError;
+      if (error) throw error;
       return authData.user;
     },
     onSuccess: () => {
