@@ -29,14 +29,14 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (user) {
+      console.log("User authenticated, redirecting...");
       const isNewUser = !localStorage.getItem("hasCompletedOnboarding");
-      if (isNewUser) {
-        setLocation("/onboarding");
-      } else {
-        setLocation("/");
-      }
+      const redirectPath = isNewUser ? "/onboarding" : "/";
+      
+      // Use direct window location for more reliable navigation
+      window.location.href = redirectPath;
     }
-  }, [user, setLocation]);
+  }, [user]);
 
   if (user) return null;
 

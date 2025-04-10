@@ -139,7 +139,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Welcome back!",
         description: "Successfully logged in",
       });
-      setLocation("/");
+      // Force redirection with window.location instead of setLocation
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       toast({
