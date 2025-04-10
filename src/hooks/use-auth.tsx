@@ -67,7 +67,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: credentials.email,
         password: credentials.password,
       });
-      if (error) throw error;
+      if (error) {
+        if (error.message === 'Email not confirmed') {
+          throw new Error('Please check your email to confirm your account before logging in');
+        }
+        throw error;
+      }
       
       const { data: profile } = await supabase
         .from('profiles')
@@ -102,10 +107,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: {
           data: {
             full_name: data.fullName
-          }
+          },
+          emailRedirectTo: window.location.origin + '/auth'
         }
       });
       if (error) throw error;
+      if (!authData.user?.confirmed_at) {
+        throw new Error('Please check your email to confirm your account');
+      }
       return authData.user;
     },
     onSuccess: () => {
