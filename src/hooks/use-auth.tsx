@@ -108,14 +108,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           data: {
             full_name: data.fullName
           },
-          emailRedirectTo: window.location.origin + '/auth'
+          emailRedirectTo: `${window.location.origin}/auth`
         }
       });
       if (error) throw error;
-      if (!authData.user?.confirmed_at) {
-        throw new Error('Please check your email to confirm your account');
+      
+      // Registration successful but needs email confirmation
+      if (authData.user && !authData.user.confirmed_at) {
+        return { 
+          user: authData.user,
+          message: 'Please check your email to confirm your account'
+        };
       }
+      
       return authData.user;
+    },
+    onSuccess: (data) => {
+      if (data.message) {
+        toast({
+          title: "Registration successful",
+          description: data.message,
+        });
+        setLocation("/auth");
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+        toast({
+          title: "Welcome to SIPlylearn!",
+          description: "Your account has been created successfully",
+        });
+        setLocation("/");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
