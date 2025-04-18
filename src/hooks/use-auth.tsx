@@ -10,6 +10,10 @@ type User = {
   username?: string;
   email: string;
   fullName: string;
+  age?: number;
+  gender?: string;
+  university?: string;
+  profession?: string;
   created_at?: string;
 };
 
@@ -22,12 +26,22 @@ type RegisterData = {
   email: string;
   password: string;
   fullName: string;
+  username: string;
+  age?: number;
+  gender?: string;
+  university: string;
+  profession: string;
 };
 
 type Profile = {
   id: string;
   email: string;
   full_name: string;
+  username?: string;
+  age?: number;
+  gender?: string;
+  university?: string;
+  profession?: string;
   created_at?: string;
 };
 
@@ -121,6 +135,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: data.user.id,
         email: data.user.email,
         fullName: data.user.user_metadata.full_name,
+        username: data.user.user_metadata.username,
+        age: data.user.user_metadata.age,
+        gender: data.user.user_metadata.gender,
+        university: data.user.user_metadata.university,
+        profession: data.user.user_metadata.profession,
         created_at: data.user.created_at,
       };
       localStorage.setItem("user-data", JSON.stringify(userData));
@@ -161,6 +180,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           options: {
             data: {
               full_name: data.fullName,
+              username: data.username,
+              age: data.age,
+              gender: data.gender,
+              university: data.university,
+              profession: data.profession
             },
             emailRedirectTo: `${window.location.origin}/auth`,
           },
@@ -179,8 +203,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Create a profile record.
       const { error: profileError } = await supabase.from("profiles").insert([
         {
+          id: authData.user.id,
           email: data.email,
           full_name: data.fullName,
+          username: data.username,
+          age: data.age,
+          gender: data.gender,
+          university: data.university,
+          profession: data.profession,
           created_at: new Date().toISOString(),
         },
       ]);

@@ -161,6 +161,10 @@ function RegisterForm() {
       password: "",
       fullName: "",
       email: "",
+      age: undefined,
+      gender: undefined,
+      university: "",
+      profession: "",
     },
   });
 
@@ -227,6 +231,82 @@ function RegisterForm() {
             </FormItem>
           )}
         />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Age</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="number" 
+                    placeholder="Your age" 
+                    {...field}
+                    onChange={(e) => {
+                      const value = e.target.value === "" ? undefined : parseInt(e.target.value, 10);
+                      field.onChange(value);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <FormControl>
+                  <select
+                    className="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
+                  </select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="university"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>University/College</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your university or college" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="profession"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Profession/Designation</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your profession" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="password"
