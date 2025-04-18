@@ -186,7 +186,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               university: data.university,
               profession: data.profession
             },
-            emailRedirectTo: `${window.location.origin}/auth`,
+            // Use the absolute URL without query parameters
+            emailRedirectTo: window.location.origin + "/auth",
           },
         },
       );
@@ -243,9 +244,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     },
     onError: (error: Error) => {
+      console.error("Registration error details:", error);
       toast({
         title: "Registration failed",
-        description: error.message,
+        description: error.message || "Please check your network connection and try again",
         variant: "destructive",
       });
     },

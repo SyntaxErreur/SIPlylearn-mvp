@@ -7,10 +7,10 @@ export const userSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  age: z.number().min(13, "You must be at least 13 years old").max(120, "Please enter a valid age"),
-  gender: z.enum(["male", "female", "other", "prefer_not_to_say"]),
-  university: z.string().min(2, "University name is required"),
-  profession: z.string().min(2, "Profession is required"),
+  age: z.number().min(13, "You must be at least 13 years old").max(120, "Please enter a valid age").optional(),
+  gender: z.enum(["male", "female", "other", "prefer_not_to_say"]).optional(),
+  university: z.string().min(2, "University name is required").optional(),
+  profession: z.string().min(2, "Profession is required").optional(),
 });
 
 // Course schema

@@ -182,10 +182,18 @@ function RegisterForm() {
     );
 
     try {
-      await registerMutation.mutateAsync(data);
-      setLocation("/onboarding");
+      console.log("Submitting registration data:", {...data, password: "***REDACTED***"});
+      const result = await registerMutation.mutateAsync(data);
+      console.log("Registration response:", result);
+      
+      if (result.needsEmailConfirmation) {
+        // Already handled in mutation's onSuccess
+      } else {
+        setLocation("/onboarding");
+      }
     } catch (error) {
       console.error("Registration failed:", error);
+      // Error is already handled in mutation's onError
     }
   };
 
