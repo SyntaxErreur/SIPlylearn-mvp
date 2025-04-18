@@ -129,11 +129,7 @@ export default function HomePage() {
           {/* Right Section: Community Info, Notifications & Profile */}
           <div className="flex items-center gap-4 mt-4 md:mt-0">
             {/* Hide community info on extra small screens */}
-            <div className="hidden sm:flex items-center gap-2 text-xs md:text-sm bg-primary/5 px-3 py-1 rounded-full">
-              <Users className="h-4 w-4 text-primary" />
-              <span className="font-medium">12.5k+</span>
-              <span className="text-muted-foreground">Community Members</span>
-            </div>
+            <CommunityCounter />
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="h-5 w-5" />
