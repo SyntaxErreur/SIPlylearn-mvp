@@ -22,6 +22,7 @@ import { Progress } from "../components/ui/progress";
 import { useState, useEffect } from "react";
 import { mockCourses } from "../data/mockCourses";
 import { storageService } from "../lib/storage";
+import CommunityCounter from "../components/community-counter";
 
 export default function HomePage() {
   const { user } = useAuth();
