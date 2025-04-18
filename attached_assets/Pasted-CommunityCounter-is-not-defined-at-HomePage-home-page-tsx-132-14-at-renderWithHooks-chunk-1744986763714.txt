@@ -1,0 +1,67 @@
+CommunityCounter is not defined
+    at HomePage (home-page.tsx:132:14)
+    at renderWithHooks (chunk-ICOORQWA.js?v=0ad498a1:11568:26)
+    at mountIndeterminateComponent (chunk-ICOORQWA.js?v=0ad498a1:14946:21)
+    at beginWork (chunk-ICOORQWA.js?v=0ad498a1:15934:22)
+    at HTMLUnknownElement.callCallback2 (chunk-ICOORQWA.js?v=0ad498a1:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-ICOORQWA.js?v=0ad498a1:3699:24)
+    at invokeGuardedCallback (chunk-ICOORQWA.js?v=0ad498a1:3733:39)
+    at beginWork$1 (chunk-ICOORQWA.js?v=0ad498a1:19793:15)
+    at performUnitOfWork (chunk-ICOORQWA.js?v=0ad498a1:19226:20)
+    at workLoopSync (chunk-ICOORQWA.js?v=0ad498a1:19165:13)
+HomePage @ home-page.tsx:132
+renderWithHooks @ chunk-ICOORQWA.js?v=0ad498a1:11568
+mountIndeterminateComponent @ chunk-ICOORQWA.js?v=0ad498a1:14946
+beginWork @ chunk-ICOORQWA.js?v=0ad498a1:15934
+callCallback2 @ chunk-ICOORQWA.js?v=0ad498a1:3674
+invokeGuardedCallbackDev @ chunk-ICOORQWA.js?v=0ad498a1:3699
+invokeGuardedCallback @ chunk-ICOORQWA.js?v=0ad498a1:3733
+beginWork$1 @ chunk-ICOORQWA.js?v=0ad498a1:19793
+performUnitOfWork @ chunk-ICOORQWA.js?v=0ad498a1:19226
+workLoopSync @ chunk-ICOORQWA.js?v=0ad498a1:19165
+renderRootSync @ chunk-ICOORQWA.js?v=0ad498a1:19144
+performConcurrentWorkOnRoot @ chunk-ICOORQWA.js?v=0ad498a1:18706
+workLoop @ chunk-ICOORQWA.js?v=0ad498a1:197
+flushWork @ chunk-ICOORQWA.js?v=0ad498a1:176
+performWorkUntilDeadline @ chunk-ICOORQWA.js?v=0ad498a1:384Understand this error
+home-page.tsx:132 Uncaught ReferenceError: CommunityCounter is not defined
+    at HomePage (home-page.tsx:132:14)
+    at renderWithHooks (chunk-ICOORQWA.js?v=0ad498a1:11568:26)
+    at mountIndeterminateComponent (chunk-ICOORQWA.js?v=0ad498a1:14946:21)
+    at beginWork (chunk-ICOORQWA.js?v=0ad498a1:15934:22)
+    at HTMLUnknownElement.callCallback2 (chunk-ICOORQWA.js?v=0ad498a1:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-ICOORQWA.js?v=0ad498a1:3699:24)
+    at invokeGuardedCallback (chunk-ICOORQWA.js?v=0ad498a1:3733:39)
+    at beginWork$1 (chunk-ICOORQWA.js?v=0ad498a1:19793:15)
+    at performUnitOfWork (chunk-ICOORQWA.js?v=0ad498a1:19226:20)
+    at workLoopSync (chunk-ICOORQWA.js?v=0ad498a1:19165:13)
+HomePage @ home-page.tsx:132
+renderWithHooks @ chunk-ICOORQWA.js?v=0ad498a1:11568
+mountIndeterminateComponent @ chunk-ICOORQWA.js?v=0ad498a1:14946
+beginWork @ chunk-ICOORQWA.js?v=0ad498a1:15934
+callCallback2 @ chunk-ICOORQWA.js?v=0ad498a1:3674
+invokeGuardedCallbackDev @ chunk-ICOORQWA.js?v=0ad498a1:3699
+invokeGuardedCallback @ chunk-ICOORQWA.js?v=0ad498a1:3733
+beginWork$1 @ chunk-ICOORQWA.js?v=0ad498a1:19793
+performUnitOfWork @ chunk-ICOORQWA.js?v=0ad498a1:19226
+workLoopSync @ chunk-ICOORQWA.js?v=0ad498a1:19165
+renderRootSync @ chunk-ICOORQWA.js?v=0ad498a1:19144
+recoverFromConcurrentError @ chunk-ICOORQWA.js?v=0ad498a1:18764
+performConcurrentWorkOnRoot @ chunk-ICOORQWA.js?v=0ad498a1:18712
+workLoop @ chunk-ICOORQWA.js?v=0ad498a1:197
+flushWork @ chunk-ICOORQWA.js?v=0ad498a1:176
+performWorkUntilDeadline @ chunk-ICOORQWA.js?v=0ad498a1:384Understand this error
+hook.js:608 The above error occurred in the <HomePage> component:
+
+    at HomePage (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/src/pages/home-page.tsx:39:20)
+    at Route (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/node_modules/.vite/deps/wouter.js?v=0ad498a1:285:16)
+    at ProtectedRoute (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/src/components/protected-route.tsx:22:3)
+    at Switch (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/node_modules/.vite/deps/wouter.js?v=0ad498a1:342:17)
+    at Router
+    at AuthProvider (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/src/hooks/use-auth.tsx:25:32)
+    at QueryClientProvider (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=0ad498a1:2861:3)
+    at App
+    at QueryClientProvider (https://28dd371b-7dee-4308-8b08-8a4bc7cbffa7-00-z9nwfroh9rcx.sisko.replit.dev/node_modules/.vite/deps/@tanstack_react-query.js?v=0ad498a1:2861:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
