@@ -1,9 +1,10 @@
 import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import { queryClient } from "../lib/queryClient";
+import { useToast } from "../hooks/use-toast";
 import { useLocation } from "wouter";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../lib/supabase";
+import { UseMutationResult } from "@tanstack/react-query";
 
 type User = {
   id: string;
@@ -49,10 +50,11 @@ type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: ReturnType<typeof useMutation>;
-  logoutMutation: ReturnType<typeof useMutation>;
-  registerMutation: ReturnType<typeof useMutation>;
+  loginMutation: UseMutationResult<any, Error, LoginData, unknown>;
+  logoutMutation: UseMutationResult<any, Error, void, unknown>;
+  registerMutation: UseMutationResult<any, Error, RegisterData, unknown>;
 };
+
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
