@@ -5,21 +5,70 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { ArrowLeft, Lock, CheckCircle2 } from "lucide-react";
+import { supabase } from "../lib/supabase.ts";
 
 export default function PaymentPage() {
   const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handlePayment = async () => {
-    setLoading(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setSuccess(true);
+  
+
+const handlePayment = async () => {
+  setLoading(true);
+
+  // Simulate payment processing
+  await new Promise(resolve => setTimeout(resolve, 2000));
+
+  try {
+    // ✅ Get SIP data from localStorage
+    const sipRaw = JSON.parse(localStorage.getItem("SIP") || "{}");
+
+    // ✅ Get user ID from Supabase Auth
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+        console.log(userError, user)
+    }
+
+    // ✅ Format the SIP data to match Supabase schema
+    const sipData = {
+      created_at: new Date().toISOString(),
+      user_id: user?.id,
+      amount: sipRaw.amount,
+      duration: sipRaw.duration, 
+      start_date: sipRaw.startDate,
+      payment_schedule: sipRaw.summaryFrequency,
+      is_active: true,
+      course_id: sipRaw.courseId,
+      return_percentage: parseFloat(sipRaw.returnsPercentage)
+    };
+
+    // ✅ Insert into Supabase
+    const { error } = await supabase.from("savings").insert(sipData);
+
+    if (error) {
+      console.error("Error saving SIP data:", error.message);
+      alert("Failed to save savings data.");
+      return;
+    }
+
+    
+
     setTimeout(() => {
       setLocation("/");
     }, 3000);
-  };
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    alert("Something went wrong!");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   if (success) {
     return (

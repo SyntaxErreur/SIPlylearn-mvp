@@ -119,7 +119,7 @@ export default function CoursePage() {
     try {
       const Saving = {
         courseId: parseInt(params?.id || "0"),
-        amount: course.price || 0,
+        amount: 0,
         duration: 1,
         type: "full" as const,
         startDate: new Date().toISOString(),

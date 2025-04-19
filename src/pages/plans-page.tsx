@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { Saving } from "../lib/schema";
 import { Card } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
 import { Button } from "../components/ui/button";
@@ -11,99 +10,106 @@ import {
   startOfMonth,
   getDaysInMonth,
   isSameDay,
-  isBefore,
 } from "date-fns";
 import { supabase } from "../lib/supabase.ts";
 
 export default function PlansPage() {
-  // const { data: Savings = [] } = useQuery<Saving[]>({
-  //   queryKey: ["/api/Savings"],
-  // });
-
-  // // Add dummy active plan
-  // const activePlan = {
-  //   id: 1,
-  //   amount: 5,
-  //   duration: 6,
-  //   startDate: "2025-03-01",
-  //   paymentSchedule: "daily", // or "weekly" or "monthly"
-  // };
-  const { data: activePlanData } = useQuery({
+  // Fetch the active saving plan
+  const {
+    data: activePlanData,
+    isLoading: isPlanLoading,
+    isError: isPlanError,
+  } = useQuery({
     queryKey: ["active-plan"],
     queryFn: async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError) throw userError;
+
       const { data, error } = await supabase
         .from("savings")
         .select("*")
-        .eq("is_Active", true)
-        .single(); // assuming only one active plan
-  
+        .eq("user_id", user?.id)
+        .eq("is_active", true)
+        .maybeSingle();
+
       if (error) throw error;
       return data;
     },
   });
 
-  if (!activePlanData) {
+  const currentMonth = startOfMonth(new Date());
+
+  // Fetch payments (Hook is always declared regardless of plan data)
+  const {
+    data: paymentsData = [],
+    isLoading: isPaymentsLoading,
+  } = useQuery({
+    queryKey: ["payments", activePlanData?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("payments")
+        .select("date, status")
+        .eq("saving_id", activePlanData.id)
+        .gte("date", currentMonth.toISOString())
+        .eq("saving_id", activePlanData.id)
+        .gte("date", currentMonth.toISOString())
+        .lt("date", addMonths(currentMonth, 1).toISOString())
+        
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!activePlanData?.id,
+  });
+
+  if (isPlanLoading || !activePlanData) {
     return <div className="p-6">Loading active plan...</div>;
   }
-  
+
   const activePlan = {
+    id: activePlanData.id,
     amount: activePlanData.amount,
     duration: activePlanData.duration,
-    startDate: activePlanData.startDate,
+    startDate: activePlanData.start_date,
     paymentSchedule: activePlanData.paymentSchedule,
   };
-  
 
+  const startDate = new Date(activePlan.startDate);
+  const endDate = addMonths(startDate, activePlan.duration);
   const totalSaving = activePlan.amount * 30 * activePlan.duration;
-const startDate = new Date(activePlan.startDate);
-const endDate = addMonths(startDate, activePlan.duration);
+  const progress = Math.min(
+    Math.round(
+      ((new Date().getTime() - startDate.getTime()) /
+        (endDate.getTime() - startDate.getTime())) *
+        100
+    ),
+    100
+  );
 
-const progress = Math.min(
-  Math.round(
-    ((new Date().getTime() - startDate.getTime()) /
-      (endDate.getTime() - startDate.getTime())) *
-      100
-  ),
-  100
-);
-
-
-  // Generate calendar dates for the current month
-  const currentMonth = startOfMonth(new Date());
   const daysInMonth = getDaysInMonth(currentMonth);
 
-  // Define the cutoff date: all dates on or before the 7th are marked as "paid"
-  const { data: paymentsData, error } = await supabase
-  .from("payments")  // Using the 'payments' table
-  .select("date, status")  // Select relevant fields
-  .eq("saving_id", activePlan.id) // Use the active plan's ID to filter the payments
-  .gte("date", currentMonth)  // Filter payments for the current month
-  .lt("date", addMonths(currentMonth, 1)); // Only get payments for the current month
-
-if (error) throw error;
-
-// Convert successful payment dates to a set for quick lookup
-const paidDates = new Set(
-  paymentsData
-    .filter(payment => payment.status === "completed") // Filter out completed payments
-    .map(payment => format(new Date(payment.date), "yyyy-MM-dd"))
-);
-
-// Generate the calendar days for the current month
-const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
-  const date = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth(),
-    i + 1
+  const paidDates = new Set(
+    paymentsData
+      .filter((payment) => payment.status === "completed")
+      .map((payment) => format(new Date(payment.date), "yyyy-MM-dd"))
   );
-  const formattedDate = format(date, "yyyy-MM-dd");
 
-  return {
-    date,
-    status: paidDates.has(formattedDate) ? "paid" : "pending", // Check if the payment was successful
-  };
-});
+  const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
+    const date = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      i + 1
+    );
+    const formattedDate = format(date, "yyyy-MM-dd");
 
+    return {
+      date,
+      status: paidDates.has(formattedDate) ? "paid" : "pending",
+    };
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -139,25 +145,22 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
           <div className="flex items-center gap-4 mb-6">
             <DollarSign className="h-8 w-8 text-primary" />
             <div>
-              <h3 className="text-lg font-medium">Total Savings </h3>
-              <p className="text-3xl font-bold">$35</p>
+              <h3 className="text-lg font-medium">Total Savings</h3>
+              <p className="text-3xl font-bold">${totalSaving}</p>
             </div>
           </div>
 
           <div className="border-t pt-6">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h4 className="font-medium">SIPly Savings </h4>
+                <h4 className="font-medium">SIPly Savings</h4>
                 <p className="text-sm text-muted-foreground">
                   ${activePlan.amount} daily for {activePlan.duration} months
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-medium">
-                  ${activePlan.amount * 30 * activePlan.duration}
-                </p>
+                <p className="font-medium">${totalSaving}</p>
                 <p className="text-sm text-muted-foreground">
-                  {" "}
                   Estimated Total Value
                 </p>
               </div>
@@ -205,7 +208,6 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
                   )}
                 </div>
                 <div className="grid grid-cols-7 gap-2">
-                  {/* Add empty cells for days before the first of the month */}
                   {Array.from({ length: currentMonth.getDay() }).map(
                     (_, index) => (
                       <div key={`empty-${index}`} className="h-16" />
